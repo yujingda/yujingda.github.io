@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="PE,Windows,">
 
 
 
@@ -80,13 +80,14 @@
 
 
 <meta name="description" content="PE重定位向进程的虚拟内存加载PE文件时，文件会被加载到PE头的ImageBase所指向的地址处，若IB位置已经加载了其他文件，PE装载器就会将其加载到去其他未被占用的空间，这就涉及到PE地址重定位的问题。创建好进程之后，EXE文件会首先加载到内存，因此在EXE文件无需考虑地址重定位问题">
+<meta name="keywords" content="PE,Windows">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Windows下PE重定位">
 <meta property="og:url" content="http://yoursite.com/2019/04/26/windowsPE文件头/index.html">
 <meta property="og:site_name" content="鲸语">
 <meta property="og:description" content="PE重定位向进程的虚拟内存加载PE文件时，文件会被加载到PE头的ImageBase所指向的地址处，若IB位置已经加载了其他文件，PE装载器就会将其加载到去其他未被占用的空间，这就涉及到PE地址重定位的问题。创建好进程之后，EXE文件会首先加载到内存，因此在EXE文件无需考虑地址重定位问题">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-11T11:22:32.496Z">
+<meta property="og:updated_time" content="2019-08-11T11:40:54.050Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows下PE重定位">
 <meta name="twitter:description" content="PE重定位向进程的虚拟内存加载PE文件时，文件会被加载到PE头的ImageBase所指向的地址处，若IB位置已经加载了其他文件，PE装载器就会将其加载到去其他未被占用的空间，这就涉及到PE地址重定位的问题。创建好进程之后，EXE文件会首先加载到内存，因此在EXE文件无需考虑地址重定位问题">
@@ -272,6 +273,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/逆向工程/" itemprop="url" rel="index">
+                    <span itemprop="name">逆向工程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -386,6 +409,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/PE/" rel="tag"># PE</a>
+          
+            <a href="/tags/Windows/" rel="tag"># Windows</a>
+          
+        </div>
+      
 
       
       
@@ -491,7 +522,25 @@
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
             
 
           </nav>
