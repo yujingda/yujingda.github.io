@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="PE重定位向进程的虚拟内存加载PE文件时，文件会被加载到PE头的ImageBase所指向的地址处，若IB位置已经加载了其他文件，PE装载器就会将其加载到去其他未被占用的空间，这就涉及到PE地址重定位的问题。创建好进程之后，EXE文件会首先加载到内存，因此在EXE文件无需考虑地址重定位问题ASLR安全机制：每次运行时EXE文件都会被加载到随机地址。此机制也适用于DLL/SYS文件，对于个OS的主要系">
+<meta name="description" content="PE重定位向进程的虚拟内存加载PE文件时，文件会被加载到PE头的ImageBase所指向的地址处，若IB位置已经加载了其他文件，PE装载器就会将其加载到去其他未被占用的空间，这就涉及到PE地址重定位的问题。创建好进程之后，EXE文件会首先加载到内存，因此在EXE文件无需考虑地址重定位问题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Windows下PE重定位">
 <meta property="og:url" content="http://yoursite.com/2019/04/26/windowsPE文件头/index.html">
 <meta property="og:site_name" content="鲸语">
-<meta property="og:description" content="PE重定位向进程的虚拟内存加载PE文件时，文件会被加载到PE头的ImageBase所指向的地址处，若IB位置已经加载了其他文件，PE装载器就会将其加载到去其他未被占用的空间，这就涉及到PE地址重定位的问题。创建好进程之后，EXE文件会首先加载到内存，因此在EXE文件无需考虑地址重定位问题ASLR安全机制：每次运行时EXE文件都会被加载到随机地址。此机制也适用于DLL/SYS文件，对于个OS的主要系">
+<meta property="og:description" content="PE重定位向进程的虚拟内存加载PE文件时，文件会被加载到PE头的ImageBase所指向的地址处，若IB位置已经加载了其他文件，PE装载器就会将其加载到去其他未被占用的空间，这就涉及到PE地址重定位的问题。创建好进程之后，EXE文件会首先加载到内存，因此在EXE文件无需考虑地址重定位问题">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-26T07:28:34.783Z">
+<meta property="og:updated_time" content="2019-08-11T11:22:32.496Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows下PE重定位">
-<meta name="twitter:description" content="PE重定位向进程的虚拟内存加载PE文件时，文件会被加载到PE头的ImageBase所指向的地址处，若IB位置已经加载了其他文件，PE装载器就会将其加载到去其他未被占用的空间，这就涉及到PE地址重定位的问题。创建好进程之后，EXE文件会首先加载到内存，因此在EXE文件无需考虑地址重定位问题ASLR安全机制：每次运行时EXE文件都会被加载到随机地址。此机制也适用于DLL/SYS文件，对于个OS的主要系">
+<meta name="twitter:description" content="PE重定位向进程的虚拟内存加载PE文件时，文件会被加载到PE头的ImageBase所指向的地址处，若IB位置已经加载了其他文件，PE装载器就会将其加载到去其他未被占用的空间，这就涉及到PE地址重定位的问题。创建好进程之后，EXE文件会首先加载到内存，因此在EXE文件无需考虑地址重定位问题">
 
 
 
@@ -299,7 +299,7 @@
       
 
       
-        <h2 id="PE重定位"><a href="#PE重定位" class="headerlink" title="PE重定位"></a>PE重定位</h2><p>向进程的虚拟内存加载PE文件时，文件会被加载到PE头的ImageBase所指向的地址处，若IB位置已经加载了其他文件，PE装载器就会将其加载到去其他未被占用的空间，这就涉及到PE地址重定位的问题。<br>创建好进程之后，EXE文件会首先加载到内存，因此在EXE文件无需考虑地址重定位问题<br>ASLR安全机制：每次运行时EXE文件都会被加载到随机地址。<br>此机制也适用于DLL/SYS文件，对于个OS的主要系统DLL，微软会根据不同版本分别赋予不同的IB地址。同意系统的kernel32.dll、user32.dll等会被加载到自身固有的IB，所以系统的DLL实际上并不会发生重定位问题。  </p>
+        <h2 id="PE重定位"><a href="#PE重定位" class="headerlink" title="PE重定位"></a>PE重定位</h2><p>向进程的虚拟内存加载PE文件时，文件会被加载到PE头的ImageBase所指向的地址处，若IB位置已经加载了其他文件，PE装载器就会将其加载到去其他未被占用的空间，这就涉及到PE地址重定位的问题。<br>创建好进程之后，EXE文件会首先加载到内存，因此在EXE文件无需考虑地址重定位问题<br><a id="more"></a><br>ASLR安全机制：每次运行时EXE文件都会被加载到随机地址。<br>此机制也适用于DLL/SYS文件，对于个OS的主要系统DLL，微软会根据不同版本分别赋予不同的IB地址。同意系统的kernel32.dll、user32.dll等会被加载到自身固有的IB，所以系统的DLL实际上并不会发生重定位问题。  </p>
 <h2 id="PE重定位操作原理"><a href="#PE重定位操作原理" class="headerlink" title="PE重定位操作原理"></a>PE重定位操作原理</h2><ol>
 <li>在应用程序中查找硬编码的地址位置</li>
 <li>读取值后，减去ImageBase(VA-&gt;RVA)(原本这些值是以IB为基准的硬编码值)</li>
@@ -405,6 +405,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/08/11/Unit1 数据库绪论/" rel="prev" title="第一章：数据库绪论">
+                第一章：数据库绪论 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -480,7 +484,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
