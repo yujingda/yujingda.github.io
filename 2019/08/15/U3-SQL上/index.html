@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="考研,人大855,数据库,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="SQL概述SQL的产生与发展 目前，没有一个数据库系统能够支持SQL标准的所有概念和特性   同时，许多厂商对于SQL基本命令集进行了不同程度的扩充和修改，又可以支持标准以外的一些功能特性">
+<meta name="keywords" content="考研,人大855,数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unit3 关系数据库标准语言SQL(前三节)">
+<meta property="og:url" content="http://yoursite.com/2019/08/15/U3-SQL上/index.html">
+<meta property="og:site_name" content="鲸语">
+<meta property="og:description" content="SQL概述SQL的产生与发展 目前，没有一个数据库系统能够支持SQL标准的所有概念和特性   同时，许多厂商对于SQL基本命令集进行了不同程度的扩充和修改，又可以支持标准以外的一些功能特性">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-15T09:21:29.252Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unit3 关系数据库标准语言SQL(前三节)">
+<meta name="twitter:description" content="SQL概述SQL的产生与发展 目前，没有一个数据库系统能够支持SQL标准的所有概念和特性   同时，许多厂商对于SQL基本命令集进行了不同程度的扩充和修改，又可以支持标准以外的一些功能特性">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/15/U3-SQL上/">
+
+
+
+
+
+  <title>Unit3 关系数据库标准语言SQL(前三节) | 鲸语</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">鲸语</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/15/U3-SQL上/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yu_jingda">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鲸语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Unit3 关系数据库标准语言SQL(前三节)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-15T17:18:30+08:00">
+                2019-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/幽邃研路/" itemprop="url" rel="index">
+                    <span itemprop="name">幽邃研路</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="SQL概述"><a href="#SQL概述" class="headerlink" title="SQL概述"></a>SQL概述</h3><h4 id="SQL的产生与发展"><a href="#SQL的产生与发展" class="headerlink" title="SQL的产生与发展"></a>SQL的产生与发展</h4><ol>
+<li>目前，没有一个数据库系统能够支持SQL标准的所有概念和特性  </li>
+<li>同时，许多厂商对于SQL基本命令集进行了不同程度的扩充和修改，又可以支持标准以外的一些功能特性  <a id="more"></a> 
+<h4 id="SQL的特点"><a href="#SQL的特点" class="headerlink" title="SQL的特点"></a>SQL的特点</h4></li>
+<li>综合统一  <ul>
+<li>非关系模型的数据语言一般分为四种，在数据库投入运行之后，如果想修改模式需要重装数据库。SQL集四种语言功能于一体。用户修改模式不需要数据库停止运行  </li>
+<li>数据结构的单一性带来了数据操作符的单一性，克服了非关系系统由于信息表示方式的多样性带来的操作复杂性</li>
+</ul>
+</li>
+<li>高度非过程化<ul>
+<li>用SQL进行数据操作时，只要提出做什么，而无须指明怎么做，因此无需了解存取路径。存取路径的选择以及SQL的操作过程由系统自动完成  </li>
+</ul>
+</li>
+<li>面向集合的操作方式</li>
+<li>以同一种语法结构提供多种使用方式<ul>
+<li>SQL既是独立的语言，又是嵌入式语言。可以嵌入进高级语言程序中，而在两种不同的使用方式下，SQL的语法结构基本是一致的</li>
+</ul>
+</li>
+<li>语言简洁、易学易用</li>
+</ol>
+<h4 id="SQL的基本概念"><a href="#SQL的基本概念" class="headerlink" title="SQL的基本概念"></a>SQL的基本概念</h4><ol>
+<li>基本表是独立存在的表，在DBMS中一个关系对应一个基本表，一个or多个基本表对应一个存储文件，一个表可以带若干索引，索引也存放在存储文件中</li>
+<li>存储文件的逻辑结构构成了关系数据库的内模式。存储文件的物理结构对最终用户是隐蔽的</li>
+<li>视图是从一个或几个基本表导出的表，它本身不独立存储与数据库中。它里面的数据存放在导出视图的基本表中  视图之上可以继续定义视图</li>
+</ol>
+<h3 id="学生-课程数据库"><a href="#学生-课程数据库" class="headerlink" title="学生-课程数据库"></a>学生-课程数据库</h3><p>本章所用的样例为学生课程数据库  </p>
+<h3 id="数据定义"><a href="#数据定义" class="headerlink" title="数据定义"></a>数据定义</h3><p>关系数据库系统支持三级模式结构，其模式、外模式、内模式的基本对象有模式、视图、表、索引等，因此SQL的数据定义功能包括模式定义、视图定义、表定义、索引定义  </p>
+<table>
+<thead>
+<tr>
+<th>操作对象</th>
+<th>创建</th>
+<th>删除</th>
+<th>修改 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模式</td>
+<td>CREATE SCHEMA</td>
+<td>DROP SCHEMA</td>
+<td></td>
+</tr>
+<tr>
+<td>表</td>
+<td>CREATE TABLE</td>
+<td>DROP TABLE</td>
+<td>ALTER TABLE</td>
+</tr>
+<tr>
+<td>视图</td>
+<td>CREATE VIEW</td>
+<td>DROP VIEW</td>
+<td></td>
+</tr>
+<tr>
+<td>索引</td>
+<td>CREATE INDEX</td>
+<td>DROP INDEX</td>
+<td>ALTER INDEX</td>
+</tr>
+</tbody>
+</table>
+<p>想要对于模式或者视图进行修改，就只能删了重建  </p>
+<p>在早期数据库系统中，所有数据库对象都属于一个数据库。在现在，<strong>一个关系DBMS的实例中可以建立东哥数据库，一个数据库中可以建立多个模式，一个模式下通常包括多个表、视图和索引等数据库对象</strong>  </p>
+<h4 id="模式的定义和删除"><a href="#模式的定义和删除" class="headerlink" title="模式的定义和删除"></a>模式的定义和删除</h4><h5 id="定义模式"><a href="#定义模式" class="headerlink" title="定义模式"></a>定义模式</h5><h6 id="定义语句："><a href="#定义语句：" class="headerlink" title="定义语句："></a>定义语句：</h6><p>CREATE SCHEMA &lt;模式名&gt; AUTHORIZATION &lt;用户名&gt;<br>（如果没有指明模式名，则模式名隐含为用户名）  </p>
+<h6 id="意义："><a href="#意义：" class="headerlink" title="意义："></a>意义：</h6><p>定义模式实际上定义了一个命名空间，在这个空间中可以进一步定义该模式包含的数据对象（如基本表、视图、索引等）  </p>
+<p>目前，在定义模式的时候，可以直接在模式定义中进一步创建视图、基本表或进行授权。完整语句如下<br><strong>CREATE SCHEMA &lt;模式名&gt; AUCHORIZATION &lt;用户名&gt; [&lt;表定义子句&gt;|&lt;视图定义子句&gt;|&lt;授权定义子句&gt;]</strong><br>（“[]”与“|”并不是子句中真实存在的，这里是为了更好理解）  </p>
+<p>举个例子：<br>为用户ZANG创建一模式，并直接定义个表：<br>CREATE SCHEMA TEST AUCHORIZATION ZANG<br>CREATE TABLE TAB1 (COL1 LALA<br>                   COL2 BALA);</p>
+<h5 id="删除模式"><a href="#删除模式" class="headerlink" title="删除模式"></a>删除模式</h5><h6 id="删除语句："><a href="#删除语句：" class="headerlink" title="删除语句："></a>删除语句：</h6><p>DROP SCHEMA &lt;模式名&gt; &lt;CASCADE|RESTRICT&gt;；</p>
+<h6 id="参数说明："><a href="#参数说明：" class="headerlink" title="参数说明："></a>参数说明：</h6><ol>
+<li>CASCADE（级联）：<br>表示在删除模式的同时把该模式下所有的数据库对象全部删除</li>
+<li>RESTRICT（限制）：<br>如果在该模式中已经定义了数据库对象，则拒绝删除语句的执行  </li>
+</ol>
+<h4 id="基本表的定义、删除与修改"><a href="#基本表的定义、删除与修改" class="headerlink" title="基本表的定义、删除与修改"></a>基本表的定义、删除与修改</h4><h5 id="定义基本表"><a href="#定义基本表" class="headerlink" title="定义基本表"></a>定义基本表</h5><p>创建一个模式，就建立了一个数据库的命名空间。在这个空间中首先要定义的是该模式包含的数据库基本表  </p>
+<h6 id="定义语句：-1"><a href="#定义语句：-1" class="headerlink" title="定义语句："></a>定义语句：</h6><p>CREATE TABLE &lt;表名&gt; (&lt;列名&gt;&lt;数据类型&gt;[列级完整性约束条件],<br>                     &lt;列名&gt;&lt;数据类型&gt;[列级完整性约束条件])<br>                     &lt;列名&gt;&lt;数据类型&gt;[列级完整性约束条件]<br>                     ……<br>                     [&lt;表级完整性约束条件&gt;]);  </p>
+<p>注意：  </p>
+<ul>
+<li>这些完整性约束条件写入系统的数据字典中，由系统自动检查</li>
+<li>如果完整性约束条件涉及该表的多个属性列，则必须定义在表级上  </li>
+<li>定义外码时，<strong>参照表和被参照表可以是同一张表</strong>  <h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5>在SQL中域的概念用数据类型来实现，定义表的各属性时要知名其数据类型及长度  </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHAR(n)</td>
+<td>长度为n的定长字符串</td>
+</tr>
+<tr>
+<td>VARCHAR(n)</td>
+<td>最大长度为n的变长字符串</td>
+</tr>
+<tr>
+<td>CLOB</td>
+<td>字符串大对象</td>
+</tr>
+<tr>
+<td>BLOB</td>
+<td>二进制大对象</td>
+</tr>
+<tr>
+<td>INT, INTEGER</td>
+<td>长整数（4B）</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td>短整数</td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>大整数</td>
+</tr>
+<tr>
+<td>NUMERIC(p,d)</td>
+<td>定点数，由p位数字（不包括符号或小数点）组成，小数点后有d位数字</td>
+</tr>
+<tr>
+<td>REAL</td>
+<td>单精度浮点数</td>
+</tr>
+<tr>
+<td>DOUBLE PRECISION</td>
+<td>双精度浮点数</td>
+</tr>
+<tr>
+<td>FLOAT(n)</td>
+<td>可选精度的浮点数，精度至少为n位</td>
+</tr>
+<tr>
+<td>BOOLEAN</td>
+<td>逻辑布尔量</td>
+</tr>
+<tr>
+<td>DATE</td>
+<td>日期，格式为 YYYY-MM-DD</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>时间，格式为HH:MM:SS</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>时间戳类型</td>
+</tr>
+<tr>
+<td>INTERVAL</td>
+<td>时间间隔类型</td>
+</tr>
+</tbody>
+</table>
+<h5 id="模式与表"><a href="#模式与表" class="headerlink" title="模式与表"></a>模式与表</h5><p>每个基本表都属于某一个模式  </p>
+<h6 id="定义基本表所属的模式的方法："><a href="#定义基本表所属的模式的方法：" class="headerlink" title="定义基本表所属的模式的方法："></a>定义基本表所属的模式的方法：</h6><ol>
+<li>在表名中显式给出模式名：<br>CREATE TABLE “MODEL1”.TAB1(…)  </li>
+<li>在创建模式语句中同时创建表</li>
+<li>设置所属模式，这样在创建表时，表名中不必给出模式名  <h6 id="数据库对象默认模式："><a href="#数据库对象默认模式：" class="headerlink" title="数据库对象默认模式："></a>数据库对象默认模式：</h6>当用户创建基本表时，若没有指定模式，系统会根据搜索路径来确定该对象所属的模式。搜索路径包含一组模式列表，DBMS会使用模式列表中第一个存在的模式作为数据库对象的模式名，模式名都不存在就报错  </li>
+</ol>
+<p>显示搜索路径：<br>SHOW search_path;<br>（当前没进行过操作，搜索路径的默认值是$user, PUBLIC。含义是首先搜索与用户名相同的模式名，没搜到，就使用PUBLIC模式）  </p>
+<p>设置搜索路径：<br>SET search_path TO “S-T”,PUBLIC;<br>然后定义基本表：CREATE TABLE TAB1();<br>创建的就是”S-T”.TAB1<br>(搜索路径应该对应的是一个用于查询列表，用的时候对应一个模式索引)  </p>
+<h5 id="修改基本表"><a href="#修改基本表" class="headerlink" title="修改基本表"></a>修改基本表</h5><h6 id="修改语句："><a href="#修改语句：" class="headerlink" title="修改语句："></a>修改语句：</h6><p>ALTER TABLE &lt;表名&gt;<br>[ADD [COLUMN] &lt;新列名&gt; &lt;数据类型&gt; [完整性约束]]<br>[ADD [表级完整性约束]]<br>[DROP [COLUMN] &lt;列名&gt; [CASCADE|RESTRICT]]<br>[DROP CONSTRAINT&lt;完整性约束名&gt;[RESTRICT|CASCADE]]<br>[ALTER COLUMN&lt;列名&gt; &lt;数据类型&gt;];<br>说明：  </p>
+<ul>
+<li>DROP COLUMN子句：<ul>
+<li>CASCADE：自动删除引用了该列的其他对象</li>
+<li>RESTRICT：如果该列被其他对象引用，就拒绝删除该列</li>
+</ul>
+</li>
+<li>ADD COLUMN可以用于增加新的列级完整性约束条件</li>
+<li>ALTER COLUMN：可以修改列明或数据类型</li>
+</ul>
+<h5 id="删除基本表"><a href="#删除基本表" class="headerlink" title="删除基本表"></a>删除基本表</h5><h6 id="删除语句：-1"><a href="#删除语句：-1" class="headerlink" title="删除语句："></a>删除语句：</h6><p>DROP TABLE &lt;表名&gt; [CASCADE|RESTRICT];<br>说明：  </p>
+<ul>
+<li>RESTRICT：与删除的表不能倍其他约束所引用，不能有视图，不能有触发器，不能有存储过程或函数等。（靠具体厂商的实现）</li>
+<li>CASCADE：相关的依赖对象一起被删除</li>
+<li>默认为RESTRICT</li>
+</ul>
+<h4 id="索引的建立和删除"><a href="#索引的建立和删除" class="headerlink" title="索引的建立和删除"></a>索引的建立和删除</h4><p>表的数据量较大时，建立索引是加快查询速度的有效手段，用户可根据需要建立一个或多个索引，以提供多种存取路径。  </p>
+<h6 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h6><ul>
+<li>顺序文件上的索引：<br>针对按制定属性值升/降序存储的关系，在该属性上建立一个索引文件，索引文件由属性值和相应的元组指针构成  </li>
+<li>B+树索引：<br>将索引属性组织成B+树的形式，叶节点为属性值和相应的指针  </li>
+<li>散列索引</li>
+<li>位图索引</li>
+</ul>
+<p><strong>用户不必也不能显式的选择索引</strong>  </p>
+<h5 id="建立索引"><a href="#建立索引" class="headerlink" title="建立索引"></a>建立索引</h5><h6 id="建立语句："><a href="#建立语句：" class="headerlink" title="建立语句："></a>建立语句：</h6><p>CREATE [UNIQUE] [CLUSTER] INDEX &lt;索引名&gt;<br>ON &lt;表名&gt;(&lt;列名&gt; [&lt;次序&gt;], &lt;列名&gt; [&lt;次序&gt;],…);  </p>
+<p>说明：  </p>
+<ul>
+<li>次序：指定索引值的排列顺序，可选ASC DESC，默认值为ASC  </li>
+<li>UNIQUE：每个索引值只对应唯一的数据记录</li>
+<li>CLUSTER：要建立的索引是聚簇索引  </li>
+</ul>
+<p>例子：<br>CREATE UNIQUE INDEX stusno ON student(Sno ASC, Cno DESC);  </p>
+<h5 id="修改索引"><a href="#修改索引" class="headerlink" title="修改索引"></a>修改索引</h5><h6 id="修改语句：-1"><a href="#修改语句：-1" class="headerlink" title="修改语句："></a>修改语句：</h6><p>ALTER INDEX &lt;旧索引名&gt; RENAME TO &lt;新索引名&gt;;<br>只能重命名……  </p>
+<h5 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h5><p>索引一经建立就由系统使用和维护，不需用户干预。但若数据增删改频繁，系统要花费很多时间维护索引，降低查询效率，此时可以删除一些不必要的索引  </p>
+<h6 id="删除语句：-2"><a href="#删除语句：-2" class="headerlink" title="删除语句："></a>删除语句：</h6><p>DROP INDEX &lt;索引名&gt;;  </p>
+<h4 id="数据字典"><a href="#数据字典" class="headerlink" title="数据字典"></a>数据字典</h4><p>数据字典是关系DBMS内部的一组系统表，它记录了数据库中所有的定义信息，包括关系模式定义、视图定义、索引定义、完整性约束定义各类用户的操作权限，统计信息等  </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/考研/" rel="tag"># 考研</a>
+          
+            <a href="/tags/人大855/" rel="tag"># 人大855</a>
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/13/Unit2 关系数据库/" rel="next" title="第二章 关系数据库">
+                <i class="fa fa-chevron-left"></i> 第二章 关系数据库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yu_jingda</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL概述"><span class="nav-number">1.</span> <span class="nav-text">SQL概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL的产生与发展"><span class="nav-number">1.1.</span> <span class="nav-text">SQL的产生与发展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL的特点"><span class="nav-number">1.2.</span> <span class="nav-text">SQL的特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL的基本概念"><span class="nav-number">1.3.</span> <span class="nav-text">SQL的基本概念</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#学生-课程数据库"><span class="nav-number">2.</span> <span class="nav-text">学生-课程数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据定义"><span class="nav-number">3.</span> <span class="nav-text">数据定义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模式的定义和删除"><span class="nav-number">3.1.</span> <span class="nav-text">模式的定义和删除</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#定义模式"><span class="nav-number">3.1.1.</span> <span class="nav-text">定义模式</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#定义语句："><span class="nav-number">3.1.1.1.</span> <span class="nav-text">定义语句：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#意义："><span class="nav-number">3.1.1.2.</span> <span class="nav-text">意义：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除模式"><span class="nav-number">3.1.2.</span> <span class="nav-text">删除模式</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#删除语句："><span class="nav-number">3.1.2.1.</span> <span class="nav-text">删除语句：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#参数说明："><span class="nav-number">3.1.2.2.</span> <span class="nav-text">参数说明：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本表的定义、删除与修改"><span class="nav-number">3.2.</span> <span class="nav-text">基本表的定义、删除与修改</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#定义基本表"><span class="nav-number">3.2.1.</span> <span class="nav-text">定义基本表</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#定义语句：-1"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">定义语句：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据类型"><span class="nav-number">3.2.2.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模式与表"><span class="nav-number">3.2.3.</span> <span class="nav-text">模式与表</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#定义基本表所属的模式的方法："><span class="nav-number">3.2.3.1.</span> <span class="nav-text">定义基本表所属的模式的方法：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#数据库对象默认模式："><span class="nav-number">3.2.3.2.</span> <span class="nav-text">数据库对象默认模式：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改基本表"><span class="nav-number">3.2.4.</span> <span class="nav-text">修改基本表</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#修改语句："><span class="nav-number">3.2.4.1.</span> <span class="nav-text">修改语句：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除基本表"><span class="nav-number">3.2.5.</span> <span class="nav-text">删除基本表</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#删除语句：-1"><span class="nav-number">3.2.5.1.</span> <span class="nav-text">删除语句：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引的建立和删除"><span class="nav-number">3.3.</span> <span class="nav-text">索引的建立和删除</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#索引类型"><span class="nav-number">3.3.0.1.</span> <span class="nav-text">索引类型</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#建立索引"><span class="nav-number">3.3.1.</span> <span class="nav-text">建立索引</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#建立语句："><span class="nav-number">3.3.1.1.</span> <span class="nav-text">建立语句：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改索引"><span class="nav-number">3.3.2.</span> <span class="nav-text">修改索引</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#修改语句：-1"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">修改语句：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除索引"><span class="nav-number">3.3.3.</span> <span class="nav-text">删除索引</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#删除语句：-2"><span class="nav-number">3.3.3.1.</span> <span class="nav-text">删除语句：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据字典"><span class="nav-number">3.4.</span> <span class="nav-text">数据字典</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yu_jingda</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
