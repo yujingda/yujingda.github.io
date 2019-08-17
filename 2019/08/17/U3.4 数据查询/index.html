@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="考研,人大855,数据库,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="3.4.1 单表查询1. 选择表中的若干列 查询指定列 这就是关系代数中的投影运算 SELECT &amp;lt;列名&amp;gt; FROM &amp;lt;表名&amp;gt; 逐元组抽取目标属性上的值组成新关系 语句中的列名顺序和表中顺序可以不同">
+<meta name="keywords" content="考研,人大855,数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.4 数据查询">
+<meta property="og:url" content="http://yoursite.com/2019/08/17/U3.4 数据查询/index.html">
+<meta property="og:site_name" content="鲸语">
+<meta property="og:description" content="3.4.1 单表查询1. 选择表中的若干列 查询指定列 这就是关系代数中的投影运算 SELECT &amp;lt;列名&amp;gt; FROM &amp;lt;表名&amp;gt; 逐元组抽取目标属性上的值组成新关系 语句中的列名顺序和表中顺序可以不同">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-17T07:06:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.4 数据查询">
+<meta name="twitter:description" content="3.4.1 单表查询1. 选择表中的若干列 查询指定列 这就是关系代数中的投影运算 SELECT &amp;lt;列名&amp;gt; FROM &amp;lt;表名&amp;gt; 逐元组抽取目标属性上的值组成新关系 语句中的列名顺序和表中顺序可以不同">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/17/U3.4 数据查询/">
+
+
+
+
+
+  <title>3.4 数据查询 | 鲸语</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">鲸语</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/17/U3.4 数据查询/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yu_jingda">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鲸语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">3.4 数据查询</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-17T15:03:10+08:00">
+                2019-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/幽邃研路/" itemprop="url" rel="index">
+                    <span itemprop="name">幽邃研路</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="3-4-1-单表查询"><a href="#3-4-1-单表查询" class="headerlink" title="3.4.1 单表查询"></a>3.4.1 单表查询</h4><h5 id="1-选择表中的若干列"><a href="#1-选择表中的若干列" class="headerlink" title="1. 选择表中的若干列"></a>1. 选择表中的若干列</h5><ol>
+<li>查询指定列<ul>
+<li>这就是关系代数中的投影运算</li>
+<li>SELECT &lt;列名&gt; FROM &lt;表名&gt;</li>
+<li>逐元组抽取目标属性上的值组成新关系</li>
+<li>语句中的列名顺序和表中顺序可以不同<a id="more"></a> </li>
+</ul>
+</li>
+<li>查询全部列<ul>
+<li>SELECT 全部列名</li>
+<li>SELECT *</li>
+</ul>
+</li>
+<li>查询经过计算的值<ul>
+<li>Select子句中的目标列表达式可以是表中的属性列也可以是表达式</li>
+<li>表达式可以是算术表达式，也可以是字符串常量、函数等<ul>
+<li>字符串常量的话，查询结果的每一行，在该列上都是该字符串常量</li>
+</ul>
+</li>
+<li>某个列后边加空格，可以指定别名<ul>
+<li>select sname, sage-11 Birthday, cno  <h5 id="2-选择表中的若干元组"><a href="#2-选择表中的若干元组" class="headerlink" title="2. 选择表中的若干元组"></a>2. 选择表中的若干元组</h5></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>取消取值重复的行<ul>
+<li>用DISTINCT</li>
+<li>如果没有写DISTINCT，默认为ALL，即保留取值重复的行</li>
+</ul>
+</li>
+<li>查询满足条件的元组<ul>
+<li>WHERE子句</li>
+<li>查询条件 | 谓词<br>  —|—<br>  比较 | =, &gt;, &lt;, &gt;=, &lt;=, !=, &lt;&gt;, !&gt;, !&lt;; NOT+上述运算符<br>  确定范围 | BETWEEN AND, NOT BETWEEN AND<br>  确定集合 | IN, NOT IN<br>  字符匹配 | LIKE, NOT LIKE<br>  空值 | IS NULL, IS NOT NULL<br>  多重条件（逻辑运算） | AND, OR, NOT<h6 id="比较运算："><a href="#比较运算：" class="headerlink" title="比较运算："></a>比较运算：</h6></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>Sdept = ‘CS’，可能为逐元组扫描比较，成功则生成新元组  </li>
+<li>age &lt; 30  <h6 id="确定范围："><a href="#确定范围：" class="headerlink" title="确定范围："></a>确定范围：</h6>WHERE 列名 BETWEEN 下限 AND 上限  <h6 id="确定集合："><a href="#确定集合：" class="headerlink" title="确定集合："></a>确定集合：</h6>WHERE 列名 IN （集合）<br>（这个IN的集合是一个散点的集合，而BET AND 是连续集合）  <h6 id="字符匹配："><a href="#字符匹配：" class="headerlink" title="字符匹配："></a>字符匹配：</h6></li>
+<li>语法格式：[NOT] LIKE’&lt;匹配串&gt;’ [ESCAPE’&lt;换码字符&gt;’]</li>
+<li>查找指定的属性列值与匹配串相匹配的元组<ul>
+<li>%代表任意长度的字符串</li>
+<li>_代表任意单个字符<br>若LIKE后面的字符串不含通配符，则可以用=代替LIKE，用!=代替NOT LIKE<br>若要查询的字符串中本身含有通配符的符号，则利用ESCAPE &lt;换码字符&gt;来处理：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">例：查询DB_design课程的课程号：  </span><br><span class="line">SELECT Cno  </span><br><span class="line">FROM Cousre</span><br><span class="line">WHERE Cname LIKE &apos;DB\_course&apos; ESCAPE &apos;\&apos;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>这里，’\’被处理成了转码字符，因此紧跟在、后面的_不会被视为通配符  </p>
+<h6 id="涉及空值的查询"><a href="#涉及空值的查询" class="headerlink" title="涉及空值的查询"></a>涉及空值的查询</h6><p>IS NULL不可以用’=’代替  </p>
+<h6 id="多重条件查询"><a href="#多重条件查询" class="headerlink" title="多重条件查询"></a>多重条件查询</h6><p>AND优先级高于OR，但是可以用()改变优先级关系<br>IN相当于很多OR的缩写  </p>
+<h5 id="3-ORDER-BY子句"><a href="#3-ORDER-BY子句" class="headerlink" title="3. ORDER BY子句"></a>3. ORDER BY子句</h5><p>ORDER BY子句可以对于查询结果按照一个或者多个属性列进行排序，默认为升序<br><strong>对于空值，排序是显示的次序由具体实现来决定，各个系统的实现可以不同，只要保持一致就行</strong>  </p>
+<h5 id="4-聚集函数"><a href="#4-聚集函数" class="headerlink" title="4. 聚集函数"></a>4. 聚集函数</h5><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>COUNT(*)</td>
+<td>统计元组个数</td>
+</tr>
+<tr>
+<td>COUNT([DISTINCT</td>
+<td>ALL]&lt;列名&gt;)</td>
+<td>统计一列中值的个数</td>
+</tr>
+<tr>
+<td>SUM([DISTINCT</td>
+<td>ALL]&lt;列名&gt;)</td>
+<td>计算一列值的总和（该列必须是数值型）</td>
+</tr>
+<tr>
+<td>AVG([DISTINCT</td>
+<td>ALL]&lt;列名&gt;)</td>
+<td>计算一列数值的平均值</td>
+</tr>
+<tr>
+<td>MAX([DISTINCT</td>
+<td>ALL]&lt;列名&gt;)</td>
+<td>求一列值中的最大值</td>
+</tr>
+<tr>
+<td>MIN([DISTINCT</td>
+<td>ALL]&lt;列名&gt;)</td>
+<td>求一列值中的最小值</td>
+</tr>
+</tbody>
+</table>
+<p>若指定DISTINCT，则<strong>计算时</strong>要取消选中列的重复值  </p>
+<p><strong>当聚集函数遇到空值时，除COUNT(星)以外，都跳过空值而只处理非空值</strong></p>
+<p>WHERE字句不能用聚集函数，聚集函数只能用于SELECT子句或HAVING子句中  </p>
+<h5 id="5-GROUP-BY子句"><a href="#5-GROUP-BY子句" class="headerlink" title="5. GROUP BY子句"></a>5. GROUP BY子句</h5><p>GROUP BY子句按照一个或者多个列的值进行分组，值相等的为一组<br><strong>分组后聚焦函数将作用于每一组，即每一组都有一个函数值</strong>，查询结果分组的目的就是细化聚焦函数作用的对象<br>在GROUP BY中使用HAVING子句可以对于分出的组进行筛选  </p>
+<h4 id="3-4-2-连接查询"><a href="#3-4-2-连接查询" class="headerlink" title="3.4.2 连接查询"></a>3.4.2 连接查询</h4><h5 id="1-等值和非等值连接查询"><a href="#1-等值和非等值连接查询" class="headerlink" title="1. 等值和非等值连接查询"></a>1. 等值和非等值连接查询</h5><p>连接查询中WHERE子句中用来连接两个表的条件称为<strong>连接条件</strong>或者<strong>连接谓词</strong><br>连接谓词还可以采用：<br>表名.列名 BETWEEN 表名.列名 AND 表名.列名<br>等值连接：连接运算符为‘=’，其他运算符为非等值连接<br><strong>连接谓词中的列名为连接字段，各连接字段类型必须是可比的</strong>  </p>
+<p>例子：Student.SNO=SC.SNO<br>执行该连接操作的一种可能性为：从Stu表中找出第一个元组，然后遍历SC表，由此，遍历完Stu表。<strong>这就是嵌套循环连接算法的基本思想</strong><br>当使用索引时，<strong>可以根据Sno值通过索引找到相应的SC元组，用索引查询SC中满足条件的元组一般会比全表扫描快</strong><br><strong>若在等值连接中，把目标列中重复的属性列去掉则为自然连接</strong><br>（之前学的是在关系模型中定义的概念，现在这个是在SQL中的具体实现）<br>一条SQL语句可以同时完成选择和连接查询，<strong>这时WHERE子句是由选择谓词和连接谓词组成的复合条件</strong>  </p>
+<p>例子：<br>SELECT Stu.sno,Sname<br>FROM Stu,SC<br>WHERE Stu.Sno=SC.Sno AND SC.Cno=’2’ AND SC.Grade&gt;90  </p>
+<p>这个查询的一种优化的执行过程是，先从SC中筛选出Cno=2且Grade&gt;90的元组形成一个种间关系，在和Stu中的元组进行连接  </p>
+<h5 id="2-自身连接"><a href="#2-自身连接" class="headerlink" title="2. 自身连接"></a>2. 自身连接</h5><p>一个表与其自己可以连接，称为表的自身连接<br>自身连接的时候要给表取别名  </p>
+<h5 id="3-外连接"><a href="#3-外连接" class="headerlink" title="3. 外连接"></a>3. 外连接</h5><p>若连接某表时，想要<strong>把悬浮元组保留在结果关系中时</strong><br>左外连接和右外连接<br>（课本中使用[LEFT|RIGHT] OUTER JOIN来表示外连接）  </p>
+<h5 id="4-多表连接"><a href="#4-多表连接" class="headerlink" title="4. 多表连接"></a>4. 多表连接</h5><p>上述都是双表连接、一个表与自己连接，多表连接指&gt;=3张表<br>DBMS一般都是先连接其中两张表，然后把结果与第三张表进行连接  </p>
+<h4 id="3-4-3-嵌套查询"><a href="#3-4-3-嵌套查询" class="headerlink" title="3.4.3 嵌套查询"></a>3.4.3 嵌套查询</h4><p>在SQL中，<strong>一个SELECT-FROM-WHERE 语句成为一个查询块</strong>，将一个查询块嵌套在另外一个查询块的<strong>WHERE子句</strong>或者<strong>HAVING短语</strong>的条件中的查询称为<strong>嵌套查询</strong>  </p>
+<p>例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT Sname  </span><br><span class="line">FROM Student  </span><br><span class="line">WHERE Sno IN  </span><br><span class="line">(SELECT Sno FROM SC WHERE Cno=&apos;2&apos;);</span><br></pre></td></tr></table></figure></p>
+<p>上层查询块称为外层查询或者父查询，下层查询块称为内层查询或者子查询  </p>
+<p>子查询中不能使用ORDER BY子句，ORDER BY子句只能用于对于最终结果进行排序  </p>
+<p>意义：<strong>嵌套查询使得用户可以用多个简单查询构成复杂的查询。以层层嵌套的方式来构造程序正是SQL中“结构化”的含义所在</strong>  </p>
+<p>查询分类：  </p>
+<ul>
+<li><strong>不相关子查询</strong>    <ul>
+<li>定义：子查询的查询条件不依赖于父查询，则为不相关  </li>
+<li>处理方法：由里向外，先执行子查询，子查询的结果用于建立其父查询的查找条件  </li>
+</ul>
+</li>
+<li><strong>相关子查询</strong><ul>
+<li>定义：如果子查询的查询条件依赖于父查询，这类子查询称为相关子查询</li>
+<li>整个查询语句称为<strong>相关嵌套查询语句</strong></li>
+<li>处理方法：从父查询中抽出一个元组，放入子查询中作为查询条件，子查询完成查询之后，返回结果作为父查询的查询条件，父查询把该元组拿来跑这个查询，得到查询结果，然后取出下一个元组执行该步骤  </li>
+<li>如果对于不同的元组，我们进行处理的集合也随之不同，就用相关子查询</li>
+</ul>
+</li>
+</ul>
+<p><strong>有的嵌套查询可以用连接运算替代，有的不能替代</strong>  </p>
+<h5 id="1-带有IN谓词的子查询"><a href="#1-带有IN谓词的子查询" class="headerlink" title="1. 带有IN谓词的子查询"></a>1. 带有IN谓词的子查询</h5><p>在嵌套查询中，子查询的结果往往是一个集合，所以谓词IN是嵌套查询中最常使用的的谓词  </p>
+<h5 id="2-带有比较运算符的子查询"><a href="#2-带有比较运算符的子查询" class="headerlink" title="2. 带有比较运算符的子查询"></a>2. 带有比较运算符的子查询</h5><p>指父查询和子查询之间用比较运算符进行连接，此时内层查询返回的是单个值  </p>
+<h5 id="3-带有ANY-SOME-或ALL谓词的子查询"><a href="#3-带有ANY-SOME-或ALL谓词的子查询" class="headerlink" title="3. 带有ANY(SOME)或ALL谓词的子查询"></a>3. 带有ANY(SOME)或ALL谓词的子查询</h5><p>子查询返回多值时，可以用ANY（SOME）或者ALL  </p>
+<ul>
+<li>ANY表示某一个值</li>
+<li>ALL表示任何一个值<br>然后和比较运算符的意义组合起来，就是最终意思了  </li>
+</ul>
+<p>在使用的时候，这个查询可以同义转换成其他查询<br>例子：找出非CS系中年龄小于CS系中任何一个学生的学生<br>实现法一：先子查询，找出CS系中所有学生的年龄所构成的集合，而后用&gt;ANY<br>法二：小于任何一个–&gt;小于最大值即可，因此先找出CS系中年龄最大值，然后查询小于最大值的元组  </p>
+<p>对前两段总结：ANY/ALL与聚集函数MAX//MIN以及谓词IN/NOT IN根据要求（即&gt;&lt;的不同）有不同的对应关系  </p>
+<h5 id="4-带有EXIST谓词的子查询"><a href="#4-带有EXIST谓词的子查询" class="headerlink" title="4. 带有EXIST谓词的子查询"></a>4. 带有EXIST谓词的子查询</h5><p>EXISTS代表存在量词。<strong>带有EXISTS的子查询不反悔任何数据，只产生逻辑真值”true“或逻辑假值”false“</strong><br>利用EXISTS可以判断：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x\in R \ \ \ \ S\subseteq R \ \ \ \ S=R \ \ \ \ S\cap R\neq \varnothing</span><br></pre></td></tr></table></figure>
+<p>使用EXISTS后，若内层结果非空则WHERE返回真值，若为空则返回假值<br>带有EXISTS的相关子查询是在父查询中逐个抽取元组根据返回值进行比较（那么普通的呢？？）  </p>
+<p>所有带IN, 比较运算符，ANY/ALL的子查询都能够用带EXISTS谓词的子查询等价替换  </p>
+<h6 id="通过EXISTS-与N-E可以处理全称量词查询问题"><a href="#通过EXISTS-与N-E可以处理全称量词查询问题" class="headerlink" title="通过EXISTS 与N E可以处理全称量词查询问题"></a>通过EXISTS 与N E可以处理全称量词查询问题</h6><p>一个全称量词，如“学生x选修了全部课程”，转换为以下这个查询被否定。这个查询就是：存在课程y，x没有选修y。<br>没有选修–&gt;not exists<br>命题本身否定–&gt;not exists<br>我们要的就是内层命题的判断结果而已也就是找出这样的学生，对本命题判断结果最终为true<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">select *  </span><br><span class="line">from student s  </span><br><span class="line">where not exists   </span><br><span class="line">(  </span><br><span class="line">select *  </span><br><span class="line">from course c  </span><br><span class="line">where not exists  </span><br><span class="line">(  </span><br><span class="line">select *  </span><br><span class="line">from transcript t  </span><br><span class="line">where s.id = t.studid and c.crscode = t.crscode  </span><br><span class="line">)  </span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<h6 id="逻辑蕴含查询问题"><a href="#逻辑蕴含查询问题" class="headerlink" title="逻辑蕴含查询问题"></a>逻辑蕴含查询问题</h6><p>逻辑蕴含需要通过谓词演算进行转化，将其转化成存在量词加上交并补的形式  </p>
+<h4 id="3-4-4-集合查询"><a href="#3-4-4-集合查询" class="headerlink" title="3.4.4 集合查询"></a>3.4.4 集合查询</h4><p>SELECT操作的结果是集合，因此对于多个SELECT的结果，可以进行集合操作<br>分类：  </p>
+<ul>
+<li>UNION 并操作<ul>
+<li>UNION会对结果自动去重，使用UNION ALL可以避免</li>
+</ul>
+</li>
+<li>INTERSECT 交操作<ul>
+<li>既……又……，貌似很多时候可以用AND来等价  </li>
+</ul>
+</li>
+<li>EXCEPT 差操作</li>
+</ul>
+<p>参加集合操作的各个查询结果其列数和数据类型必须相同  </p>
+<h4 id="3-4-5-基于派生表的查询"><a href="#3-4-5-基于派生表的查询" class="headerlink" title="3.4.5 基于派生表的查询"></a>3.4.5 基于派生表的查询</h4><p>子查询不仅可以出现在WHERE子句中，还可以出现在FROM子句中，这是子查询生成的临时派生表成为父查询的查询对象  </p>
+<p>子查询没有聚集函数的话就不用为子表指定列名了（直接用AS在里面指明不行吗？）。指定列名就是：SELECT AVG(A1),BALABALA… AS ZITAB(AVG_A1,BALABALA…)<br>派生表必须有名字  </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/考研/" rel="tag"># 考研</a>
+          
+            <a href="/tags/人大855/" rel="tag"># 人大855</a>
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/15/U3-SQL上/" rel="next" title="Unit3 关系数据库标准语言SQL(前三节)">
+                <i class="fa fa-chevron-left"></i> Unit3 关系数据库标准语言SQL(前三节)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/17/U3剩余 数据更新、空值的处理、视图/" rel="prev" title="U3剩余 数据更新、空值的处理、视图">
+                U3剩余 数据更新、空值的处理、视图 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yu_jingda</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-1-单表查询"><span class="nav-number">1.</span> <span class="nav-text">3.4.1 单表查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-选择表中的若干列"><span class="nav-number">1.1.</span> <span class="nav-text">1. 选择表中的若干列</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-选择表中的若干元组"><span class="nav-number">1.2.</span> <span class="nav-text">2. 选择表中的若干元组</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#比较运算："><span class="nav-number">1.2.1.</span> <span class="nav-text">比较运算：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#确定范围："><span class="nav-number">1.2.2.</span> <span class="nav-text">确定范围：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#确定集合："><span class="nav-number">1.2.3.</span> <span class="nav-text">确定集合：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#字符匹配："><span class="nav-number">1.2.4.</span> <span class="nav-text">字符匹配：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#涉及空值的查询"><span class="nav-number">1.2.5.</span> <span class="nav-text">涉及空值的查询</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#多重条件查询"><span class="nav-number">1.2.6.</span> <span class="nav-text">多重条件查询</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-ORDER-BY子句"><span class="nav-number">1.3.</span> <span class="nav-text">3. ORDER BY子句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-聚集函数"><span class="nav-number">1.4.</span> <span class="nav-text">4. 聚集函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-GROUP-BY子句"><span class="nav-number">1.5.</span> <span class="nav-text">5. GROUP BY子句</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-2-连接查询"><span class="nav-number">2.</span> <span class="nav-text">3.4.2 连接查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-等值和非等值连接查询"><span class="nav-number">2.1.</span> <span class="nav-text">1. 等值和非等值连接查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-自身连接"><span class="nav-number">2.2.</span> <span class="nav-text">2. 自身连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-外连接"><span class="nav-number">2.3.</span> <span class="nav-text">3. 外连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-多表连接"><span class="nav-number">2.4.</span> <span class="nav-text">4. 多表连接</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-3-嵌套查询"><span class="nav-number">3.</span> <span class="nav-text">3.4.3 嵌套查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-带有IN谓词的子查询"><span class="nav-number">3.1.</span> <span class="nav-text">1. 带有IN谓词的子查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-带有比较运算符的子查询"><span class="nav-number">3.2.</span> <span class="nav-text">2. 带有比较运算符的子查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-带有ANY-SOME-或ALL谓词的子查询"><span class="nav-number">3.3.</span> <span class="nav-text">3. 带有ANY(SOME)或ALL谓词的子查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-带有EXIST谓词的子查询"><span class="nav-number">3.4.</span> <span class="nav-text">4. 带有EXIST谓词的子查询</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#通过EXISTS-与N-E可以处理全称量词查询问题"><span class="nav-number">3.4.1.</span> <span class="nav-text">通过EXISTS 与N E可以处理全称量词查询问题</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#逻辑蕴含查询问题"><span class="nav-number">3.4.2.</span> <span class="nav-text">逻辑蕴含查询问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-4-集合查询"><span class="nav-number">4.</span> <span class="nav-text">3.4.4 集合查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-5-基于派生表的查询"><span class="nav-number">5.</span> <span class="nav-text">3.4.5 基于派生表的查询</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yu_jingda</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
