@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="考研,人大855,数据库,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据库的完整性是指数据的正确性和相容性      完整性：数据是符合现实世界语义的，反映当前实际状况的 相容性：数据库同一对象在不同关系表中的数据是合乎逻辑的    完整性和安全性的比较：    完整性： 为了防止数据库中存在不符合语义的数据，也就是防止数据库中存在不正确而的数据 其检查和控制的防范对象是不合语义的，不正确的数据">
+<meta name="keywords" content="考研,人大855,数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第五章 数据库的完整性">
+<meta property="og:url" content="http://yoursite.com/2019/08/25/U5 数据库的完整性/index.html">
+<meta property="og:site_name" content="鲸语">
+<meta property="og:description" content="数据库的完整性是指数据的正确性和相容性      完整性：数据是符合现实世界语义的，反映当前实际状况的 相容性：数据库同一对象在不同关系表中的数据是合乎逻辑的    完整性和安全性的比较：    完整性： 为了防止数据库中存在不符合语义的数据，也就是防止数据库中存在不正确而的数据 其检查和控制的防范对象是不合语义的，不正确的数据">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-25T03:10:46.001Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第五章 数据库的完整性">
+<meta name="twitter:description" content="数据库的完整性是指数据的正确性和相容性      完整性：数据是符合现实世界语义的，反映当前实际状况的 相容性：数据库同一对象在不同关系表中的数据是合乎逻辑的    完整性和安全性的比较：    完整性： 为了防止数据库中存在不符合语义的数据，也就是防止数据库中存在不正确而的数据 其检查和控制的防范对象是不合语义的，不正确的数据">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/25/U5 数据库的完整性/">
+
+
+
+
+
+  <title>第五章 数据库的完整性 | 鲸语</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">鲸语</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/25/U5 数据库的完整性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yu_jingda">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鲸语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第五章 数据库的完整性</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-25T11:09:27+08:00">
+                2019-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/幽邃研路/" itemprop="url" rel="index">
+                    <span itemprop="name">幽邃研路</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>数据库的完整性是指数据的正确性和相容性</strong>    </p>
+<ul>
+<li>完整性：数据是符合现实世界语义的，反映当前实际状况的</li>
+<li>相容性：数据库同一对象在不同关系表中的数据是合乎逻辑的  </li>
+</ul>
+<p>完整性和安全性的比较：  </p>
+<ul>
+<li>完整性：<ul>
+<li>为了防止数据库中存在不符合语义的数据，也就是防止数据库中存在不正确而的数据</li>
+<li>其检查和控制的防范对象是不合语义的，不正确的数据<a id="more"></a> </li>
+</ul>
+</li>
+<li>安全性：<ul>
+<li>保护数据库防止而已破坏和非法存取  </li>
+<li>非法用户和非法操作</li>
+</ul>
+</li>
+</ul>
+<p>为了维护数据库的完整性，DBMS必须要能够实现如下功能：  </p>
+<ol>
+<li>提供定义完整性约束条件的机制<ul>
+<li>又称为完整性规则，是数据库中数据所必须满足的语义约束条件。</li>
+<li>SQL标准中使用了一系列概念来描述数据库中的完整性，包括实体完整性，参照完整性，用户定义的完整性</li>
+</ul>
+</li>
+<li>提供完整性检查的方法<ul>
+<li>完整性检查：数据库中所提供的用以检查数据是否满足完整性约束条件的机制称为完整性检查</li>
+</ul>
+</li>
+<li>进行违约处理</li>
+</ol>
+<p><strong>关系数据库管理系统使得完整性控制成为其核心支持的功能，从而能够为所有用户和应用提供一致的数据库完整性</strong>  </p>
+<h3 id="5-1-实体完整性"><a href="#5-1-实体完整性" class="headerlink" title="5.1 实体完整性"></a>5.1 实体完整性</h3><h4 id="5-1-1-定义实体完整性"><a href="#5-1-1-定义实体完整性" class="headerlink" title="5.1.1 定义实体完整性"></a>5.1.1 定义实体完整性</h4><p>关系模型的实体完整性在CREATE TABLE中用PRIMARY KEY定义。对于单属性构成的码，可以定义为列级约束条件或者表级约束条件。对于多属性构成的码，只能定义为表级约束条件  </p>
+<h4 id="5-1-2-实体完整性检查和违约处理"><a href="#5-1-2-实体完整性检查和违约处理" class="headerlink" title="5.1.2 实体完整性检查和违约处理"></a>5.1.2 实体完整性检查和违约处理</h4><p>定义完主码之后，每当对基本表插入一条记录或对于主码列进行更新操作时，都要进行实体完整性检查：  </p>
+<h5 id="检查内容："><a href="#检查内容：" class="headerlink" title="检查内容："></a>检查内容：</h5><ol>
+<li>检查主码值是否唯一  </li>
+<li>检查主码的各个属性是否为空</li>
+</ol>
+<h5 id="检查的实现方法："><a href="#检查的实现方法：" class="headerlink" title="检查的实现方法："></a>检查的实现方法：</h5><p>检查记录中主码值是否唯一的方法有二：  </p>
+<ol>
+<li>全表扫描</li>
+<li>在主码上自动建立一个索引（现在DBMS常用）  </li>
+</ol>
+<h3 id="5-2-参照完整性"><a href="#5-2-参照完整性" class="headerlink" title="5.2 参照完整性"></a>5.2 参照完整性</h3><h4 id="5-1-1-定义参照完整性"><a href="#5-1-1-定义参照完整性" class="headerlink" title="5.1.1 定义参照完整性"></a>5.1.1 定义参照完整性</h4><p>参照完整性在CREATE TABLE中使用FOREIGN KEY短语定义哪些列为外码，用REFERENCES短语指明这些外参照哪些表的主码  </p>
+<h4 id="5-1-2-参照完整性检查和违约处理"><a href="#5-1-2-参照完整性检查和违约处理" class="headerlink" title="5.1.2 参照完整性检查和违约处理"></a>5.1.2 参照完整性检查和违约处理</h4><p>可能破坏参照完整性的情况以及违约处理：  </p>
+<table>
+<thead>
+<tr>
+<th>被参照表</th>
+<th>参照表</th>
+<th>违约处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可能破坏参照完整性</td>
+<td>插入元组</td>
+<td>拒绝</td>
+</tr>
+<tr>
+<td>可能破坏参照完整性</td>
+<td>修改外码值</td>
+<td>拒绝</td>
+</tr>
+<tr>
+<td>删除元组</td>
+<td>可能破坏参照完整性</td>
+<td>拒绝/级联删除/设置空值</td>
+</tr>
+<tr>
+<td>修改外码值</td>
+<td>可能破坏参照完整性</td>
+<td>拒绝/级联删除/设置空值  </td>
+</tr>
+</tbody>
+</table>
+<p>系统采取策略说明：  </p>
+<ol>
+<li>拒绝：不允许该操作执行，该策略一般设置为<strong>默认策略</strong></li>
+<li>级联操作：当删除或者修改被参照表中的一个元组导致与参照表不一致时，删除或修改参照表中所有导致不一致的元组</li>
+<li>设置为空值：当删除或修改被参照表中一个元组导致与参照表不一致时，将参照表中所有造成不一致的元组的对应属性设置为空值  </li>
+</ol>
+<p>外码很多时候是不能为空的，因此对于参照完整性，除了定义外码，还应定义外码列是否允许空值<br>一般，想让系统采用其他策略则必须在创建参照表时显式的加以说明<br>例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE SC&#123;</span><br><span class="line">    Sno CHAR(9),</span><br><span class="line">    Cno CHAR(4),</span><br><span class="line">    Grade SMALLINT,</span><br><span class="line">    PRIMARY KEY(Sno,Cno),</span><br><span class="line">    FOREIGN KEY(Sno) REFERENCE Student(Sno)</span><br><span class="line">        ON DELETE CASCADE</span><br><span class="line">        ON UPDATE CASCADE</span><br><span class="line">    FOREIGN KEY(Cno) REFERENCE Course(Cno)</span><br><span class="line">        ON DELETE NO ACTION</span><br><span class="line">        /*当删除Course表中的元组造成不一致时，拒绝删除*/</span><br><span class="line">        ON UPDATE CASCADE</span><br><span class="line">        /*当更新Course表中的元组造成不一致时，级联更新SC表中的元组*/</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>由此，可以对UPDATE和DELETE操作使用不同的策略，此外，DBMS在实现参照完整性时，除了要提供定义主码、外码的机制以外，还需要提供不同的策略供用户选择  </p>
+<h3 id="5-3-用户定义的完整性"><a href="#5-3-用户定义的完整性" class="headerlink" title="5.3 用户定义的完整性"></a>5.3 用户定义的完整性</h3><p>针对某一具体应用的数据必须满足的语义要求  </p>
+<h4 id="5-3-1-属性上的约束条件"><a href="#5-3-1-属性上的约束条件" class="headerlink" title="5.3.1 属性上的约束条件"></a>5.3.1 属性上的约束条件</h4><h5 id="1-属性上的约束条件的定义"><a href="#1-属性上的约束条件的定义" class="headerlink" title="1. 属性上的约束条件的定义"></a>1. 属性上的约束条件的定义</h5><p>在CREATE TABLE定义属性的同时，可以根据应用要求定义属性上的约束条件，即属性值限制：  </p>
+<ol>
+<li>列值非空（NOT NULL）</li>
+<li>列值唯一（UNIQUE）</li>
+<li>检查列值是否满足一个条件表达式（CHECK短语）</li>
+</ol>
+<p>而其实际使用方法如下：  </p>
+<ol>
+<li><p><strong>不允许取空值</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE SC&#123;</span><br><span class="line">    Sno CHAR(9) NOT NULL,</span><br><span class="line">    Cno CHAR(4),</span><br><span class="line">    Grade SMALLINT,</span><br><span class="line">    PRIMARY KEY(Cno)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>列值唯一</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE DEPT&#123;</span><br><span class="line">    Dname CHAR(10) UNIQUE NOT NULL,</span><br><span class="line">    Dnum SMALLINT,</span><br><span class="line">    PRIMARY KEY(Dnum)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>用CHECK短语指定列值应该满足的条件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Student(</span><br><span class="line">    Sno CHAR(9) PRIMARY KEY,</span><br><span class="line">    Sname CHAR(9) NOT NULL,</span><br><span class="line">    Ssex CHAR(2) CHECK(Ssex IN(&apos;男&apos;,&apos;女&apos;),</span><br><span class="line">    Sage SMALLINT</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h5 id="2-属性上约束条件的检查和违约处理"><a href="#2-属性上约束条件的检查和违约处理" class="headerlink" title="2. 属性上约束条件的检查和违约处理"></a>2. 属性上约束条件的检查和违约处理</h5><p>插入元组或者修改属性的值时，不满足约束条件就拒绝执行  </p>
+<h4 id="5-3-2-元组上的约束条件"><a href="#5-3-2-元组上的约束条件" class="headerlink" title="5.3.2 元组上的约束条件"></a>5.3.2 元组上的约束条件</h4><h5 id="1-元组上约束条件的定义"><a href="#1-元组上约束条件的定义" class="headerlink" title="1. 元组上约束条件的定义"></a>1. 元组上约束条件的定义</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Student(</span><br><span class="line">Sno CHAR(9),</span><br><span class="line">Sname CHAR(9) NOT NULL,</span><br><span class="line">Ssex CHAR(2),</span><br><span class="line">Sage SMALLINT，</span><br><span class="line">PRIMARY KEY(Sno),</span><br><span class="line">CHECK(Ssex=&apos;女&apos; OR Sname NOT LIKE &apos;Ms.%&apos;)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>(总结就是CHECK约束条件即可以写在列级，又可以写在表级，当写在表级时，他可以定义跨列的约束)  </p>
+<h5 id="2-元组上违约条件的检查和违约处理"><a href="#2-元组上违约条件的检查和违约处理" class="headerlink" title="2.元组上违约条件的检查和违约处理"></a>2.元组上违约条件的检查和违约处理</h5><p>拒绝执行</p>
+<h3 id="5-4-完整性约束命名子句"><a href="#5-4-完整性约束命名子句" class="headerlink" title="5.4 完整性约束命名子句"></a>5.4 完整性约束命名子句</h3><p>以上讲解的完整性约束条件，都在CREATE TABLE中定义，SQL还在CREATE TABLE中提供了完整性约束命名子句CONSTRAINT，用来对完整性约束命名，从而灵活的增加和修改  </p>
+<h4 id="1-完整性约束命名子句"><a href="#1-完整性约束命名子句" class="headerlink" title="1. 完整性约束命名子句"></a>1. 完整性约束命名子句</h4><h5 id="语句格式"><a href="#语句格式" class="headerlink" title="语句格式"></a>语句格式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONSTRAINT &lt;完整性约束条件名&gt;&lt;完整性约束条件&gt;</span><br></pre></td></tr></table></figure>
+<p>例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Student(</span><br><span class="line">Sno NUMERIC(6)</span><br><span class="line">    CONSTRAINT C1 CHECK(Sno BETWEEN 9000 AND 9999),</span><br><span class="line">Sname CHAR(9)</span><br><span class="line">    CONSTRAINT C2 NOT NULL</span><br><span class="line">Sage NUMERIC(3)</span><br><span class="line">    CONSTRAINT C2 CHECK(SAGE &lt; 30),</span><br><span class="line">Ssex CHAR(2)</span><br><span class="line">    CONSTRAINT C4 CHECK(Ssex IN (&apos;男&apos;,&apos;女&apos;)),</span><br><span class="line">    CONSTRAINT StudentKey PRIMARY KEY(Sno)</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-修改表的完整性限制"><a href="#2-修改表的完整性限制" class="headerlink" title="2. 修改表的完整性限制"></a>2. 修改表的完整性限制</h4><p>可以使用ALTER TABLE语句删除或者新增约束条件<br>想要修改表中的约束条件，可以先删除原本的约束条件，在创建一个新的约束条件</p>
+<p>例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Student</span><br><span class="line">    DROP CONSTRAINT C1;</span><br><span class="line">ALTER TABLE Student</span><br><span class="line">    ADD CONSTRAINT C1 CHECK(Sno BETWEEN 10000 AND 19999);</span><br></pre></td></tr></table></figure></p>
+<h3 id="5-6-断言"><a href="#5-6-断言" class="headerlink" title="5.6 断言"></a>5.6 断言</h3><p>通过断言，可以指定更具一般性约束。可以定义设计及多个表或者剧集操作的比较复杂的完整性约束<br>断言创建之后，任何对断言中所涉及关系的操作都会触发DBMS对于断言的检查，任何使得断言不为真值的操作都会被拒绝执行  </p>
+<h4 id="1-断言的创建"><a href="#1-断言的创建" class="headerlink" title="1. 断言的创建"></a>1. 断言的创建</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE ASSERTION &lt;断言名&gt;&lt;CHECK子句&gt;</span><br></pre></td></tr></table></figure>
+<p>CHECK子句中的约束条件与WHERE子句中约束条件的写法类似  </p>
+<p>例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//限制数据库课程最多有60人选修</span><br><span class="line">CREATE ASSERTION ASSE_SC_DB_NUM</span><br><span class="line">    CHECK (60&gt;=(SELECT COUNT(*)</span><br><span class="line">                FROM Course,SC</span><br><span class="line">                WHERE Course.CNO=SC.SNO AND Course.cname=&apos;数据库&apos;)</span><br><span class="line">            )</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE ASSERTION ASSE_SC_CNUM1</span><br><span class="line">    CHECK(60&gt;=ALL(SELECT count(*)</span><br><span class="line">                  FROM SC</span><br><span class="line">                  GROUP by cno)</span><br><span class="line">         )</span><br></pre></td></tr></table></figure>
+<p>但是WHERE子句中不能使用聚集函数，但是CHECK子句中可以  </p>
+<h4 id="2-断言的删除"><a href="#2-断言的删除" class="headerlink" title="2. 断言的删除"></a>2. 断言的删除</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP ASSERTION &lt;断言名&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="5-7-触发器"><a href="#5-7-触发器" class="headerlink" title="5.7 触发器"></a>5.7 触发器</h3><p><strong>触发器是用户定义在关系表上的一类由事件驱动的特殊过程</strong>   </p>
+<h4 id="5-7-1-定义触发器"><a href="#5-7-1-定义触发器" class="headerlink" title="5.7.1 定义触发器"></a>5.7.1 定义触发器</h4><p><strong>触发器又叫做事件-条件-动作规则</strong><br>当特定的系统事件发生时，对规则的条件进行检查，若条件成立，则执行规则中的动作，否则，不执行该动作。规则中的动作体可以很复杂，可以涉及其他表和数据库对象，通常是一段SQL存储过程  </p>
+<h5 id="语句格式："><a href="#语句格式：" class="headerlink" title="语句格式："></a>语句格式：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TRIGGER &lt;触发器名字&gt;</span><br><span class="line">&#123;BEFORE|AFTER&#125; &lt;触发事件&gt; ON &lt;表名&gt;</span><br><span class="line">REFERENCING NEW|OLD ROW AS &lt;变量&gt;</span><br><span class="line">FOR EACH&#123;ROW|STATEMENT&#125;</span><br><span class="line">[WHEN&lt;触发条件&gt;]&lt;触发动作体&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="语句说明："><a href="#语句说明：" class="headerlink" title="语句说明："></a>语句说明：</h5><ol>
+<li>只有创建表的用户才能在表上创建触发器，且一个表上可创建的触发器数量有限</li>
+<li>触发器名字可以包含模式名，也可以不包含模式名，同一模式下，触发器名必须是唯一的，并且触发器名和表名必须在同一模式下</li>
+<li>触发器只能定义在基本表上，而不能定义在视图上，该表也称为触发器的目标表</li>
+<li>出发时间可以是增删改，也可以是INSERT OR DELETE等，还可以是UPDATE OF &lt;触发列&gt;，也就是可以进一步指明修改那些列时触发触发器。</li>
+<li>AFTER 和 BEFORE 是触发的时机。AFTER表示触发事件的操作执行之后执行触发器，BEFORE表示事件执行之前执行触发器  </li>
+<li>触发器按照所触发动作的间隔尺寸，分为行级和语句级，行级触发器：对每一行执行一次触发器，语句级：只执行一次触发器  </li>
+<li>触发事件出现后，回<strong>激活</strong>触发器，触发器的动作是否执行根据WHEN触发条件，如果省略WHEN，则触发即执行  </li>
+</ol>
+<p>例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//当对标SC的Grade属性进行修改时，若分数增加10%，则将此次操作</span><br><span class="line">//记录到另一个表SC_U(Sno,Cno,OldGrade,Newgrade)中，其中Oldgr</span><br><span class="line">//ade时修改前的分数，Newgrade是修改后的分数</span><br><span class="line">CREATE TRIGGER SC_T</span><br><span class="line">AFTER UPDATE OF Grade ON SC</span><br><span class="line">REFERENCING</span><br><span class="line">    OLDROW AS OldTuple,</span><br><span class="line">    NEWROW AS NewTuple</span><br><span class="line">FOR EACH ROW</span><br><span class="line">WHEN(NewTuple.Grade &gt;= 1.1 * OldTuple.Grade)</span><br><span class="line">    INSERT INTO SC_U(Sno,Cno,Oldgrade,Newgrade)</span><br><span class="line">    VALUES(OldTuple.Sno,OldTuple.Cno,OldTuple.Grade,NewTuple.Grade)</span><br></pre></td></tr></table></figure></p>
+<p>这里是语句级触发器，每一次更新的时候,都会执行一遍。这里是行级触发器，因此引用为NEWROW OLDROW，如果是语句级的触发器，就是OLDTABLE和NEWTABLE。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TRIGGER Student_Count</span><br><span class="line">AFTER INSERT ON Student</span><br><span class="line">REFERENCING </span><br><span class="line">    NEW TABLE AS DELTA</span><br><span class="line">FOR EACH STATEMENT</span><br><span class="line">    INSERT INTO StudentInsertLog(Numbers)</span><br><span class="line">    SELECT COUNT(*) FROM DELTA</span><br></pre></td></tr></table></figure>
+<p>DELTA中的元组是INSERT语句新插入的元组。默认是语句级触发器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//定义一个BEFORE行级触发器，为教师表定义一个完整性规则，教师工资不得小于4000元，如果小于，就修改为4000</span><br><span class="line">CREATEE TRIGGER Insert_Or_Update_Sal</span><br><span class="line">BEFORE INSERT OR UPDATE ON Teacher</span><br><span class="line">REFERENCING NEWROW AS NewTuple</span><br><span class="line">FOR EACH ROW</span><br><span class="line">BEGIN</span><br><span class="line">    IF (newtuplee.Job=&apos;jiaoshou&apos;) AND (newtuple.Sal&lt;4000)</span><br><span class="line">        THEN newtuple.Sal=4000</span><br><span class="line">    END IF</span><br><span class="line">END;</span><br></pre></td></tr></table></figure></p>
+<p>因为定义的是BEFORE触发器，再插入和修改教师记录前就可以按照触发器的规则1调整教师的龚总，不必等待插入后再检查在调整  </p>
+<h4 id="5-7-2-激活触发器"><a href="#5-7-2-激活触发器" class="headerlink" title="5.7.2 激活触发器"></a>5.7.2 激活触发器</h4><p>先BEFORE，然后语句，然后AFTER  </p>
+<h4 id="5-7-3-删除触发器"><a href="#5-7-3-删除触发器" class="headerlink" title="5.7.3 删除触发器"></a>5.7.3 删除触发器</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP TRIGGER &lt;触发器名&gt; ON &lt;表名&gt;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/考研/" rel="tag"># 考研</a>
+          
+            <a href="/tags/人大855/" rel="tag"># 人大855</a>
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/17/U3剩余 数据更新、空值的处理、视图/" rel="next" title="U3剩余 数据更新、空值的处理、视图">
+                <i class="fa fa-chevron-left"></i> U3剩余 数据更新、空值的处理、视图
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yu_jingda</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-实体完整性"><span class="nav-number">1.</span> <span class="nav-text">5.1 实体完整性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-1-定义实体完整性"><span class="nav-number">1.1.</span> <span class="nav-text">5.1.1 定义实体完整性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-2-实体完整性检查和违约处理"><span class="nav-number">1.2.</span> <span class="nav-text">5.1.2 实体完整性检查和违约处理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#检查内容："><span class="nav-number">1.2.1.</span> <span class="nav-text">检查内容：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#检查的实现方法："><span class="nav-number">1.2.2.</span> <span class="nav-text">检查的实现方法：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-参照完整性"><span class="nav-number">2.</span> <span class="nav-text">5.2 参照完整性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-1-定义参照完整性"><span class="nav-number">2.1.</span> <span class="nav-text">5.1.1 定义参照完整性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-2-参照完整性检查和违约处理"><span class="nav-number">2.2.</span> <span class="nav-text">5.1.2 参照完整性检查和违约处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-用户定义的完整性"><span class="nav-number">3.</span> <span class="nav-text">5.3 用户定义的完整性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-1-属性上的约束条件"><span class="nav-number">3.1.</span> <span class="nav-text">5.3.1 属性上的约束条件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-属性上的约束条件的定义"><span class="nav-number">3.1.1.</span> <span class="nav-text">1. 属性上的约束条件的定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-属性上约束条件的检查和违约处理"><span class="nav-number">3.1.2.</span> <span class="nav-text">2. 属性上约束条件的检查和违约处理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-2-元组上的约束条件"><span class="nav-number">3.2.</span> <span class="nav-text">5.3.2 元组上的约束条件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-元组上约束条件的定义"><span class="nav-number">3.2.1.</span> <span class="nav-text">1. 元组上约束条件的定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-元组上违约条件的检查和违约处理"><span class="nav-number">3.2.2.</span> <span class="nav-text">2.元组上违约条件的检查和违约处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-完整性约束命名子句"><span class="nav-number">4.</span> <span class="nav-text">5.4 完整性约束命名子句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-完整性约束命名子句"><span class="nav-number">4.1.</span> <span class="nav-text">1. 完整性约束命名子句</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#语句格式"><span class="nav-number">4.1.1.</span> <span class="nav-text">语句格式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-修改表的完整性限制"><span class="nav-number">4.2.</span> <span class="nav-text">2. 修改表的完整性限制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-6-断言"><span class="nav-number">5.</span> <span class="nav-text">5.6 断言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-断言的创建"><span class="nav-number">5.1.</span> <span class="nav-text">1. 断言的创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-断言的删除"><span class="nav-number">5.2.</span> <span class="nav-text">2. 断言的删除</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-7-触发器"><span class="nav-number">6.</span> <span class="nav-text">5.7 触发器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-7-1-定义触发器"><span class="nav-number">6.1.</span> <span class="nav-text">5.7.1 定义触发器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#语句格式："><span class="nav-number">6.1.1.</span> <span class="nav-text">语句格式：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#语句说明："><span class="nav-number">6.1.2.</span> <span class="nav-text">语句说明：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-7-2-激活触发器"><span class="nav-number">6.2.</span> <span class="nav-text">5.7.2 激活触发器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-7-3-删除触发器"><span class="nav-number">6.3.</span> <span class="nav-text">5.7.3 删除触发器</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yu_jingda</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
