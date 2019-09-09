@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="考研,人大855,数据库,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本章讲解如何在应用程序中使用编程方法对数据库进行操纵SQL是非过程化的查询语言，而高度非过程化导致它缺少流程控制能力，难以实现应用业务中的逻辑控制。SQL编程技术可以有效克服SQL语言实现复杂应用方面的不足，提高应用系统和数据库管理系统间的互操作性   8.1 嵌入式SQL嵌入式SQL：将SQL语言嵌入程序设计语言中主语言：被SQL嵌入的语言">
+<meta name="keywords" content="考研,人大855,数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第八单元 数据库编程">
+<meta property="og:url" content="http://yoursite.com/2019/09/09/U8 数据库编程/index.html">
+<meta property="og:site_name" content="鲸语">
+<meta property="og:description" content="本章讲解如何在应用程序中使用编程方法对数据库进行操纵SQL是非过程化的查询语言，而高度非过程化导致它缺少流程控制能力，难以实现应用业务中的逻辑控制。SQL编程技术可以有效克服SQL语言实现复杂应用方面的不足，提高应用系统和数据库管理系统间的互操作性   8.1 嵌入式SQL嵌入式SQL：将SQL语言嵌入程序设计语言中主语言：被SQL嵌入的语言">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-09T07:00:56.270Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第八单元 数据库编程">
+<meta name="twitter:description" content="本章讲解如何在应用程序中使用编程方法对数据库进行操纵SQL是非过程化的查询语言，而高度非过程化导致它缺少流程控制能力，难以实现应用业务中的逻辑控制。SQL编程技术可以有效克服SQL语言实现复杂应用方面的不足，提高应用系统和数据库管理系统间的互操作性   8.1 嵌入式SQL嵌入式SQL：将SQL语言嵌入程序设计语言中主语言：被SQL嵌入的语言">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/09/U8 数据库编程/">
+
+
+
+
+
+  <title>第八单元 数据库编程 | 鲸语</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">鲸语</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/09/U8 数据库编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yu_jingda">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鲸语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第八单元 数据库编程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-09T15:03:10+08:00">
+                2019-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/幽邃研路/" itemprop="url" rel="index">
+                    <span itemprop="name">幽邃研路</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本章讲解如何在应用程序中使用编程方法对数据库进行操纵<br>SQL是非过程化的查询语言，而高度非过程化导致它缺少流程控制能力，难以实现应用业务中的逻辑控制。<strong>SQL编程技术可以有效克服SQL语言实现复杂应用方面的不足，提高应用系统和数据库管理系统间的互操作性</strong>  </p>
+<h3 id="8-1-嵌入式SQL"><a href="#8-1-嵌入式SQL" class="headerlink" title="8.1 嵌入式SQL"></a>8.1 嵌入式SQL</h3><p>嵌入式SQL：将SQL语言嵌入程序设计语言中<br>主语言：被SQL嵌入的语言<br><a id="more"></a><br>嵌入式SQL的处理过程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">含嵌入式是SQL的主语言程序--&gt;DBMS预处理程序转换嵌入式SQL语句为函数调用</span><br><span class="line">DBMS预处理程序转换嵌入式SQL语句为函数调用--&gt;主语言编译程序编译处理成目标码</span><br></pre></td></tr></table></figure></p>
+<p>当写代码的时候，嵌入式SQL语句前面需要加前缀：  </p>
+<ul>
+<li>C语言：EXEC &lt;SQL语句&gt;</li>
+<li>JAVA语言：#SQL {&lt;SQL语句&gt;}  </li>
+</ul>
+<h4 id="8-1-2-嵌入式SQL语言与·主语言之间的通信"><a href="#8-1-2-嵌入式SQL语言与·主语言之间的通信" class="headerlink" title="8.1.2 嵌入式SQL语言与·主语言之间的通信"></a>8.1.2 嵌入式SQL语言与·主语言之间的通信</h4><p>数据库工作单元和源程序工作单元之间的通信主要包括：  </p>
+<ol>
+<li>向主语言传递SQL语句的执行状态信息，使得主语言能够据此信息控制程序流程，主要用SQL通信区实现</li>
+<li>主语言向SQL语句提供参数，主要用主变量实现</li>
+<li>将SQL语句查询数据库的结果交给主语言处理，主要用主变量和游标实现</li>
+</ol>
+<h5 id="1-SQL通信区"><a href="#1-SQL通信区" class="headerlink" title="1. SQL通信区"></a>1. SQL通信区</h5><p>功能：语句SQL执行之后，系统要反馈给应用程序若干信息，主要包括描述系统当前工作状态和运行环境的各种数据。这些信息将送到SQL通信区中<br>使用方法：</p>
+<ul>
+<li>SQL通信区再应用程序中使用EXEC SQL INCLUDE SQLCA来定义</li>
+<li>SQL通信区中有一个变量叫做SQLCODE，用于存放每次执行SQL语句后返回的代码  </li>
+<li>当SQL语句成功执行时，SQLCODE等于预定义的常量SUCCESS    </li>
+<li>每跑一条SQL语句，应用程序就应该检测一下SQLCODE  </li>
+</ul>
+<h5 id="2-主变量"><a href="#2-主变量" class="headerlink" title="2. 主变量"></a>2. 主变量</h5><p>主变量：SQL语句可以使用主语言程序变量来输入或者输出信息<br>分类：  </p>
+<ul>
+<li>输入主变量<ul>
+<li>应用程序对其赋值，SQL语句引用</li>
+</ul>
+</li>
+<li>输出主变量<ul>
+<li>SQL语句对其赋值或设置状态信息，返回给应用程序</li>
+</ul>
+</li>
+</ul>
+<p>指示变量</p>
+<ul>
+<li>一个主变量可以附带一个任选的指示变量</li>
+<li>一个指示变量是一个整型变量，用来“指示”（标明）所指主变量的值或条件<ul>
+<li>比如指示输入/输出主变量是否为空值等</li>
+</ul>
+</li>
+<li>使用<ul>
+<li>所有著变量和指示变量都必须在BEGIN DECLARE SECTION 和 END DECLARE SECTION之间进行说明。</li>
+<li>说明之后，主变量可在SQL中任何一个需要使用表达式的地方出现</li>
+<li>SQL语句中的主变量名和指示变量前要加冒号（：）作为标志</li>
+</ul>
+</li>
+</ul>
+<h5 id="3-游标"><a href="#3-游标" class="headerlink" title="3. 游标"></a>3. 游标</h5><p>游标是系统为用户开设的一个数据缓冲区<br>解决问题：解决SQL和应用程序的处理方式不同的问题。SQL是面向集合的，一条SQL语句可以产生或处理多条记录，而一组主变量一次只能存放一条记录，因此使用主变量并不能完全满足SQL语句像应用程序输出数据的要求</p>
+<h5 id="4-建立和关闭数据库连接"><a href="#4-建立和关闭数据库连接" class="headerlink" title="4. 建立和关闭数据库连接"></a>4. 建立和关闭数据库连接</h5><p>嵌入式SQL要访问数据库就要先连接数据库，DBMS根据用户信息对连接请求进行合法性验证，通过来身份验证才能创建一个可用的合法连接  </p>
+<ol>
+<li>建立数据库连接  <ul>
+<li>语句写法：EXEC SQL CONNECT TO target[AS connection-name][USER user-name]</li>
+<li>说明：<ul>
+<li>target是要连接的数据库服务器</li>
+<li>connection-name是可选的连接名，用于识别一个程序内同时建立的多个连接，若整个程序内只有一个连接，就可以不指定连接名</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>修改连接<ul>
+<li>如果一个程序建立了多个连接，执行的所有数据库单元的操作都在该操作提交时所选择的当前连接上，因此程序运行时可以修改当前连接</li>
+<li>语句写法：EXEC SQL SET CONNECTION connection-name|DEFAULT;</li>
+</ul>
+</li>
+<li>关闭数据库连接<ul>
+<li>语句写法：EXEC SQL DISCONNECT [connection];  </li>
+</ul>
+</li>
+</ol>
+<h4 id="8-1-3-不用游标的SQL语句"><a href="#8-1-3-不用游标的SQL语句" class="headerlink" title="8.1.3 不用游标的SQL语句"></a>8.1.3 不用游标的SQL语句</h4><h5 id="1-查询结果为单记录的SELECT语句"><a href="#1-查询结果为单记录的SELECT语句" class="headerlink" title="1. 查询结果为单记录的SELECT语句"></a>1. 查询结果为单记录的SELECT语句</h5><p>由于查询结果是单个记录，因此直接在SELECT语句中使用INTO子句放入主变量之中<br>说明：  </p>
+<ul>
+<li>INTO WHERE子句 HAVING短语的条件表达式中都可以使用主变量</li>
+<li>当初查询而得出的某个数据项为空值时，系统会自动将相应主变量后面的指示变量置为负值，而不再向该主变量赋值  </li>
+<li>如果查询结果十多条记录，程序会出错</li>
+</ul>
+<h5 id="2-非CURRECT形式的增删改语句"><a href="#2-非CURRECT形式的增删改语句" class="headerlink" title="2. 非CURRECT形式的增删改语句"></a>2. 非CURRECT形式的增删改语句</h5><p>有些非CURRECT形式的曾删改语句不用使用游标，再UPDATE的SET子句和WHERE子句中可以使用主变量，SET子句还可以使用指示变量  </p>
+<h4 id="8-1-4-使用游标的SQL语句"><a href="#8-1-4-使用游标的SQL语句" class="headerlink" title="8.1.4 使用游标的SQL语句"></a>8.1.4 使用游标的SQL语句</h4><h5 id="1-查询结果为多条记录的SELECT语句"><a href="#1-查询结果为多条记录的SELECT语句" class="headerlink" title="1. 查询结果为多条记录的SELECT语句"></a>1. 查询结果为多条记录的SELECT语句</h5><p>此时，使用游标机制将查询出来的u多条记录一次一条的送欸主程序处理，从而把对集合的操作转换为对单个记录的处理  </p>
+<h6 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h6><ol>
+<li>说明游标<br>语句写法： EXEC DECLARE &lt;游标名&gt; CURSOR FOR &lt;SELECT语句&gt;<br><strong>定义游标仅仅是一条说明性语句，这是关系数据库系统并不执行SELECT语句</strong>  </li>
+<li>打开游标</li>
+</ol>
+<ul>
+<li>语句写法：EXEC SQL OPEN&lt;游标名&gt;</li>
+<li>操作意义：打开游标就是执行对应的SELECT语句，把查询结果取到缓冲区之中。这是游标处于活动状态，指针指向拆线呢结果集的第一条记录</li>
+</ul>
+<ol start="3">
+<li>推进油表指针并取当前记录</li>
+</ol>
+<ul>
+<li>EXEC SQL FETCH &lt;游标名&gt; INTO &lt;主变量&gt;[&lt;指示变量&gt;][,&lt;主变量&gt;[&lt;指示变量&gt;]]…  </li>
+<li>将缓冲区中的当前变量存入主变量之中，同时将右边向前推进一条记录  </li>
+</ul>
+<ol start="4">
+<li>关闭游标</li>
+</ol>
+<ul>
+<li>EXEC SQL CLOSE &lt;游标名&gt;;</li>
+<li>关闭后会释放游标所占用的缓冲区和其他资源，不在和原来的拆线呢结果集相联系，但是关闭的游标可以再打开，核心的查询结果相联系  </li>
+</ul>
+<h5 id="2-CURRENT形式的UPDATE和DELETE语句"><a href="#2-CURRENT形式的UPDATE和DELETE语句" class="headerlink" title="2. CURRENT形式的UPDATE和DELETE语句"></a>2. CURRENT形式的UPDATE和DELETE语句</h5><ul>
+<li>理解：CURRENT形式指的就是实现定点增删，UPDATE和DELETE语句都是集合操作，如果只想修改或者删除其中的某个记录，则需要用带游标的SELECT语句查找出全部符合条件的记录，然后在其中找到要修改和删除的记录，然后用CURRENT形式的UPDATE和DELETE语句修改或删除</li>
+<li>语句写法：在UPDATE或者DELETE语句中加上：WHERE CURRENT OF &lt;游标名&gt;  </li>
+<li>表示修改或删除的是最近一次取出的记录  </li>
+</ul>
+<h4 id="8-1-5-动态SQL"><a href="#8-1-5-动态SQL" class="headerlink" title="8.1.5 动态SQL"></a>8.1.5 动态SQL</h4><p>前面所讲的都是静态SQL语句：砌筑变量，查询目标列，条件都是固定的<br>动态SQL语句：  </p>
+<ul>
+<li>解决问题：某些应用要到执行时才能够确定要提交的SQL语句、查询的条件</li>
+<li>有两种形式<ul>
+<li>动态组装SQL语句</li>
+<li>动态参数</li>
+</ul>
+</li>
+</ul>
+<h5 id="1-使用SQL语句主变量"><a href="#1-使用SQL语句主变量" class="headerlink" title="1. 使用SQL语句主变量"></a>1. 使用SQL语句主变量</h5><p>SQL语句主变量：程序主变量包含的内容是SQL语句，而不是原来保存数据的，输入或输出变量<br>SQL语句主变量在程序执行期间可以设置成不同的SQL语句，然后立即执行（是然后而不是这值得当时）  </p>
+<h5 id="2-动态参数"><a href="#2-动态参数" class="headerlink" title="2. 动态参数"></a>2. 动态参数</h5><ul>
+<li>含义：动态参数是SQL语句中的可变元素，动态参数的数据在运行时设定  </li>
+<li>表示方法：使用参数符号 <strong>（?）</strong>  </li>
+<li>特点：动态参数的输入不是编译时完成绑定，而是通过<strong>PREPARE语句</strong>准备主变量和<strong>执行语句EXECUTE</strong>绑定数据或主变量来完成</li>
+<li>使用步骤：<ol>
+<li>声明SQL语句主变量：这个主变量的值要包含动态参数（?）</li>
+<li>准备SQL语句（PREPARE）<ul>
+<li>PREPARE将会分析含主变量的SQL语句的内容，建立语句中包含的动态参数的内部描述符，并用&lt;语句名&gt;来标识他们的整体</li>
+<li>语句格式：EXEC SQL PREPARE &lt;语句名&gt; FROM &lt;SQL语句主变量&gt;</li>
+</ul>
+</li>
+<li>执行准备好的语句（EXECUTE)<ul>
+<li>EXECUTE将SQL语句中分析出的动态参数和主变量或数据常量绑定，作为语句的输入或者输出变量</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<p>(貌似是，首先声明一个SQL语句主变量，里面使用了动态参数，这个动态参数在使用PREPARE语句之后，就会在内部被视为一个主变量，而在外部则有一个语句名作为全部动态参数的入口，在执行的时候，被视为内部主变量的动态参数，它回和外边的一个主变量或者常数绑定，从而直接变成外边的变量)      </p>
+<h3 id="8-2-过程化SQL"><a href="#8-2-过程化SQL" class="headerlink" title="8.2 过程化SQL"></a>8.2 过程化SQL</h3><h4 id="8-2-1-过程化SQL的块结构"><a href="#8-2-1-过程化SQL的块结构" class="headerlink" title="8.2.1 过程化SQL的块结构"></a>8.2.1 过程化SQL的块结构</h4><p>SQL的分类：</p>
+<ul>
+<li>基本的SQL：高度非过程化的</li>
+<li>嵌入式SQL：利用其它程序设计语言来实现过程化</li>
+<li>过程化SQL：对于SQL的拓展，使其增加了过程化语句的功能</li>
+</ul>
+<p>过程化SQL的基本结构是块，每个块完成一个逻辑操作，块和块之间可以相互嵌套，多个块组成过程化SQL程序  </p>
+<h4 id="8-2-2-变量和常量的定义"><a href="#8-2-2-变量和常量的定义" class="headerlink" title="8.2.2 变量和常量的定义"></a>8.2.2 变量和常量的定义</h4><h5 id="1-变量的定义"><a href="#1-变量的定义" class="headerlink" title="1. 变量的定义"></a>1. 变量的定义</h5><p>变量名 数据类型 [[NOT NULL]:=初值表达式] 或<br>变量名 数据类型 [[NOT NULL] 初值表达式]  </p>
+<h5 id="2。常量的定义"><a href="#2。常量的定义" class="headerlink" title="2。常量的定义"></a>2。常量的定义</h5><p>常量名 数据类型 CONSTANT:=常量表达式<br>注意：常量必须要给定一个之并且该址在存在期间或常量的作用域内不可改变  </p>
+<h5 id="3-赋值语句"><a href="#3-赋值语句" class="headerlink" title="3. 赋值语句"></a>3. 赋值语句</h5><p>变量名:=表达式  </p>
+<h4 id="8-2-3-流程控制"><a href="#8-2-3-流程控制" class="headerlink" title="8.2.3 流程控制"></a>8.2.3 流程控制</h4><p>过程化SQL提供了流程控制语句，主要有条件控制语句和循环控制语句<br>不同产品语句语法不同（那就是非重点了估计）    </p>
+<h5 id="1-条件控制语句"><a href="#1-条件控制语句" class="headerlink" title="1. 条件控制语句"></a>1. 条件控制语句</h5><p>IF-THEN、IF-THEN-ELSE、嵌套的IF语句   </p>
+<h5 id="2-循环控制语句"><a href="#2-循环控制语句" class="headerlink" title="2. 循环控制语句"></a>2. 循环控制语句</h5><ol>
+<li>LOOP<ul>
+<li>LOOP本身是个死循环，里面需要搭配循环结束语句使用</li>
+</ul>
+</li>
+<li>WHILE-LOOP<ul>
+<li>执行循环之前进行条件判断</li>
+</ul>
+</li>
+<li>FOR-LOOP<ul>
+<li>这里的FOR循环自带循环变量，貌似不能使用外边的变量<h5 id="3-错误处理"><a href="#3-错误处理" class="headerlink" title="3. 错误处理"></a>3. 错误处理</h5></li>
+</ul>
+</li>
+</ol>
+<h3 id="8-3-存储过程和函数"><a href="#8-3-存储过程和函数" class="headerlink" title="8.3 存储过程和函数"></a>8.3 存储过程和函数</h3><p>过程化SQL块分为：</p>
+<ul>
+<li>匿名块<ul>
+<li>上边讲的都是匿名块</li>
+<li>特点：<ul>
+<li>匿名块每次执行时都需要重新编译</li>
+<li>无法存储到数据库中</li>
+<li>不能再其他过程化SQL块中调用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>命名块<ul>
+<li>存储过程和函数都是命名块</li>
+<li>被编译后保存在数据库中，称为持久性存储模块</li>
+</ul>
+</li>
+</ul>
+<h4 id="8-3-1-存储过程"><a href="#8-3-1-存储过程" class="headerlink" title="8.3.1 存储过程"></a>8.3.1 存储过程</h4><p>概念：存储过程是由过程化SQL语句书写的过程，这个过程经编译和优化后存储在数据库服务器中，因此称他为存储过程  </p>
+<h5 id="1。-存储过程的优点"><a href="#1。-存储过程的优点" class="headerlink" title="1。 存储过程的优点"></a>1。 存储过程的优点</h5><ol>
+<li>运行效率高<ul>
+<li>它不像解释执行的SQL语句那样在提出操作请求时才进行语法分析和优化工作，因而运行效率高，他提供了在服务器端快速执行SQL语句的有效途径  </li>
+</ul>
+</li>
+<li>存储过程降低了客户机和服务器之间的通信量<ul>
+<li>客户机上的应用程序只要通过网络向服务器发出调用存储过程的名字和参数，就可以让DBMS执行其中的多条SQL语句并进行数据处理。只有最终的处理结果才返回客户端  </li>
+</ul>
+</li>
+<li>方便实施企业规则<ul>
+<li>可以把企业规则的运算程序写进存储过程放入数据库服务器之中，由DBMS进行管理，既有利于集中控制，有嫩俄国狗方便的进行维护。当企业规则发生变化时只要修改存储过程即可，无需修改其他应用程序  <h5 id="2-存储过程的用户接口"><a href="#2-存储过程的用户接口" class="headerlink" title="2. 存储过程的用户接口"></a>2. 存储过程的用户接口</h5><h6 id="1-创建存储过程"><a href="#1-创建存储过程" class="headerlink" title="1. 创建存储过程"></a>1. 创建存储过程</h6>CREATE OR REPLACE PROCEDURE 过程名 （[参数1，参数2，…]）<br>AS &lt;过程化SQL块&gt;<br>说明：</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>参数列表中，可以定义输入参数、输出参数、输入/输出参数，也可以无参数  </li>
+<li>过程提结构和匿名块完全一样，（匿名块看来是最小单位233）</li>
+</ul>
+<h5 id="2-执行存储过程"><a href="#2-执行存储过程" class="headerlink" title="2. 执行存储过程"></a>2. 执行存储过程</h5><p>CALL/PERFORM PROCEDURE 过程名([参数1，参数2，…]);<br>在存储过程体中，可以调用其他存储过程  </p>
+<h5 id="3-修改存储过程"><a href="#3-修改存储过程" class="headerlink" title="3. 修改存储过程"></a>3. 修改存储过程</h5><ol>
+<li>重命名<ul>
+<li>ALTER PROCEDURE 过程名1 RENAME TO 过程名2;  </li>
+</ul>
+</li>
+<li>重新编译<ul>
+<li>ALTER PROCEDURE 过程名 COMPILE;  </li>
+</ul>
+</li>
+</ol>
+<h5 id="4-删除存储过程"><a href="#4-删除存储过程" class="headerlink" title="4. 删除存储过程"></a>4. 删除存储过程</h5><p>DROP PROCEDURE 过程名();  </p>
+<h4 id="8-3-2-函数"><a href="#8-3-2-函数" class="headerlink" title="8.3.2 函数"></a>8.3.2 函数</h4><p>本章所讲解的函数又称为<strong>自定义函数</strong>，因为是用户自己使用过程化SQL设计定义的，函数和存储过程各个方面都基本类似，都是持久性存储模块，不同之处在于函数必须指定返回的类型  </p>
+<h5 id="1-函数的定义语句格式"><a href="#1-函数的定义语句格式" class="headerlink" title="1. 函数的定义语句格式"></a>1. 函数的定义语句格式</h5><p>CREATE OR REPLACE FUNCTION 函数名([参数1,参数2,…]) RETURNS &lt;类型&gt;<br>AS &lt;过程化SQL块&gt;  </p>
+<h5 id="2-函数的执行"><a href="#2-函数的执行" class="headerlink" title="2. 函数的执行"></a>2. 函数的执行</h5><p>CALL/SELECT 函数名([参数1,参数2,…]);  </p>
+<h5 id="3-修改函数"><a href="#3-修改函数" class="headerlink" title="3. 修改函数"></a>3. 修改函数</h5><ul>
+<li>重命名<ul>
+<li>ALTER FUNCTION 过程名1 RENAME TO 过程名2  </li>
+</ul>
+</li>
+<li>重新编译<ul>
+<li>ALTER FUNCTION 函数名 COMPILE; </li>
+</ul>
+</li>
+</ul>
+<h3 id="8-4-ODBC编程"><a href="#8-4-ODBC编程" class="headerlink" title="8.4 ODBC编程"></a>8.4 ODBC编程</h3><p>优点：使用ODBC编写的程序可移植性好，能同时访问不同的数据库，共享多个数据资源<br>OPBC是微软推出的接口标准，它建立了一组规范  </p>
+<h4 id="8-4-1-ODBC概述"><a href="#8-4-1-ODBC概述" class="headerlink" title="8.4.1 ODBC概述"></a>8.4.1 ODBC概述</h4><p>产生ODBC的原因：存在不同的DBMS<br>目的：使数据库系统开放，实现开放互联  </p>
+<h4 id="8-4-2-ODBC工作原理概述"><a href="#8-4-2-ODBC工作原理概述" class="headerlink" title="8.4.2 ODBC工作原理概述"></a>8.4.2 ODBC工作原理概述</h4><p>体系结构：用户应用程序、ODBC驱动程序管理器、数据库驱动程序、数据源  </p>
+<ol>
+<li>用户应用程序<ul>
+<li>提供用户界面、应用逻辑和事务逻辑</li>
+</ul>
+</li>
+<li>ODBC驱动程序管理器<ul>
+<li>用于管理各种驱动程序</li>
+<li>可以简历里、配置或者删除程序员</li>
+</ul>
+</li>
+<li>数据库驱动程序<ul>
+<li>提供应用程序和数据库平台的独立性</li>
+<li>ODBC应用程序的操作请求有驱动程序管理器提交给某个DBMS的ODBC的驱动程序。通过调用驱动程序所支持的函数来存取数据库  </li>
+<li>驱动程序隔绝了各个数据库之间的差异，应用程序只要可以直接和驱动程序沟通就行了</li>
+</ul>
+</li>
+<li>ODBC数据源管理<ul>
+<li>数据源是最终用户所需要访问的数据，是一种数据连接的抽象  </li>
+</ul>
+</li>
+</ol>
+<h4 id="8-4-3-ODBC-API基础"><a href="#8-4-3-ODBC-API基础" class="headerlink" title="8.4.3 ODBC API基础"></a>8.4.3 ODBC API基础</h4><p>ODBC API要满足两方面的一致性：  </p>
+<ul>
+<li>API一致性</li>
+<li>语法一致性<h5 id="1-函数概述"><a href="#1-函数概述" class="headerlink" title="1. 函数概述"></a>1. 函数概述</h5>ODBC 3.0 标准提供了76个函数接口，分为：  </li>
+<li>分配和释放环境句柄、连接句柄、语句句柄</li>
+<li>连接函数</li>
+<li>与信息相关的函数</li>
+<li>事务处理函数</li>
+<li>执行相关函数</li>
+<li>编目函数<h5 id="2-句柄及其属性"><a href="#2-句柄及其属性" class="headerlink" title="2. 句柄及其属性"></a>2. 句柄及其属性</h5>句柄是32位整数值，代表一个指针<br>句柄分类：  </li>
+<li>环境句柄：每个ODBC应用程序都要建立一个，存取数据的全局背景</li>
+<li>连接句柄：一个连接句柄实现一个与数据源的连接</li>
+<li>语句句柄：指一个SQL语句，还包括SQL语句产生的结果集以及相关的信息等  </li>
+<li>描述符句柄：秩相描述SQL语句的参数、结果集列的元数据集合<h5 id="3-数据类型"><a href="#3-数据类型" class="headerlink" title="3. 数据类型"></a>3. 数据类型</h5>ODBC定义了两套数据类型，即SQL数据类型和C数据类型。</li>
+<li>C–&gt;SQL：应用程序变量传送到语句参数</li>
+<li>SQL–&gt;C：从结果集列返回到应用程序</li>
+</ul>
+<h4 id="8-4-4-ODBC的工作流程"><a href="#8-4-4-ODBC的工作流程" class="headerlink" title="8.4.4 ODBC的工作流程"></a>8.4.4 ODBC的工作流程</h4><ol>
+<li>配置数据源<ul>
+<li>把数据库变成数据源，里面写了和他相关的驱动程序</li>
+</ul>
+</li>
+<li>初始化环境<ul>
+<li>在应用程序里面对于两个数据库都创建了对应的环境句柄，但是由于应用程序还没和具体的驱动程序相关联，所以用DRIVER MANAGER来管理并配置环境属性（也就是此时环境句柄为空呗），当应用程序和某个数据源进行连接后，对应的驱动程序才会真正为环境句柄分配数据结构  </li>
+</ul>
+</li>
+<li>建立连接</li>
+<li>分配语句句柄</li>
+<li>执行SQL语句</li>
+<li>结果集处理</li>
+<li>中止处理</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/考研/" rel="tag"># 考研</a>
+          
+            <a href="/tags/人大855/" rel="tag"># 人大855</a>
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/09/U9 关系查询处理和关系优化/" rel="next" title="第九单元 关系查询处理和关系优化">
+                <i class="fa fa-chevron-left"></i> 第九单元 关系查询处理和关系优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/09/U10 数据库恢复技术/" rel="prev" title="第十单元 数据库恢复技术">
+                第十单元 数据库恢复技术 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yu_jingda</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-嵌入式SQL"><span class="nav-number">1.</span> <span class="nav-text">8.1 嵌入式SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-2-嵌入式SQL语言与·主语言之间的通信"><span class="nav-number">1.1.</span> <span class="nav-text">8.1.2 嵌入式SQL语言与·主语言之间的通信</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-SQL通信区"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. SQL通信区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-主变量"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 主变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-游标"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 游标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-建立和关闭数据库连接"><span class="nav-number">1.1.4.</span> <span class="nav-text">4. 建立和关闭数据库连接</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-3-不用游标的SQL语句"><span class="nav-number">1.2.</span> <span class="nav-text">8.1.3 不用游标的SQL语句</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-查询结果为单记录的SELECT语句"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. 查询结果为单记录的SELECT语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-非CURRECT形式的增删改语句"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. 非CURRECT形式的增删改语句</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-4-使用游标的SQL语句"><span class="nav-number">1.3.</span> <span class="nav-text">8.1.4 使用游标的SQL语句</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-查询结果为多条记录的SELECT语句"><span class="nav-number">1.3.1.</span> <span class="nav-text">1. 查询结果为多条记录的SELECT语句</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#使用步骤"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">使用步骤</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-CURRENT形式的UPDATE和DELETE语句"><span class="nav-number">1.3.2.</span> <span class="nav-text">2. CURRENT形式的UPDATE和DELETE语句</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-5-动态SQL"><span class="nav-number">1.4.</span> <span class="nav-text">8.1.5 动态SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-使用SQL语句主变量"><span class="nav-number">1.4.1.</span> <span class="nav-text">1. 使用SQL语句主变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-动态参数"><span class="nav-number">1.4.2.</span> <span class="nav-text">2. 动态参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-过程化SQL"><span class="nav-number">2.</span> <span class="nav-text">8.2 过程化SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-1-过程化SQL的块结构"><span class="nav-number">2.1.</span> <span class="nav-text">8.2.1 过程化SQL的块结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-2-变量和常量的定义"><span class="nav-number">2.2.</span> <span class="nav-text">8.2.2 变量和常量的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-变量的定义"><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 变量的定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2。常量的定义"><span class="nav-number">2.2.2.</span> <span class="nav-text">2。常量的定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-赋值语句"><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 赋值语句</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-3-流程控制"><span class="nav-number">2.3.</span> <span class="nav-text">8.2.3 流程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-条件控制语句"><span class="nav-number">2.3.1.</span> <span class="nav-text">1. 条件控制语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-循环控制语句"><span class="nav-number">2.3.2.</span> <span class="nav-text">2. 循环控制语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-错误处理"><span class="nav-number">2.3.3.</span> <span class="nav-text">3. 错误处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-存储过程和函数"><span class="nav-number">3.</span> <span class="nav-text">8.3 存储过程和函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-3-1-存储过程"><span class="nav-number">3.1.</span> <span class="nav-text">8.3.1 存储过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1。-存储过程的优点"><span class="nav-number">3.1.1.</span> <span class="nav-text">1。 存储过程的优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-存储过程的用户接口"><span class="nav-number">3.1.2.</span> <span class="nav-text">2. 存储过程的用户接口</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-创建存储过程"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">1. 创建存储过程</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-执行存储过程"><span class="nav-number">3.1.3.</span> <span class="nav-text">2. 执行存储过程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-修改存储过程"><span class="nav-number">3.1.4.</span> <span class="nav-text">3. 修改存储过程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-删除存储过程"><span class="nav-number">3.1.5.</span> <span class="nav-text">4. 删除存储过程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-3-2-函数"><span class="nav-number">3.2.</span> <span class="nav-text">8.3.2 函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-函数的定义语句格式"><span class="nav-number">3.2.1.</span> <span class="nav-text">1. 函数的定义语句格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-函数的执行"><span class="nav-number">3.2.2.</span> <span class="nav-text">2. 函数的执行</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-修改函数"><span class="nav-number">3.2.3.</span> <span class="nav-text">3. 修改函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-ODBC编程"><span class="nav-number">4.</span> <span class="nav-text">8.4 ODBC编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-4-1-ODBC概述"><span class="nav-number">4.1.</span> <span class="nav-text">8.4.1 ODBC概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-4-2-ODBC工作原理概述"><span class="nav-number">4.2.</span> <span class="nav-text">8.4.2 ODBC工作原理概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-4-3-ODBC-API基础"><span class="nav-number">4.3.</span> <span class="nav-text">8.4.3 ODBC API基础</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-函数概述"><span class="nav-number">4.3.1.</span> <span class="nav-text">1. 函数概述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-句柄及其属性"><span class="nav-number">4.3.2.</span> <span class="nav-text">2. 句柄及其属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-数据类型"><span class="nav-number">4.3.3.</span> <span class="nav-text">3. 数据类型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-4-4-ODBC的工作流程"><span class="nav-number">4.4.</span> <span class="nav-text">8.4.4 ODBC的工作流程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yu_jingda</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

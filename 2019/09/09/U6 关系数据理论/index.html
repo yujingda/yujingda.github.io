@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="考研,人大855,数据库,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="6.1 问题的提出涉及任何数据库应用系统，都会遇到如何构造合适的数据模式即逻辑结构的问题，由于关系模型有严格的数学定义，并可以向其他的数据模型转换。我们就以关系数据模型为背景讨论这个问题，形成了关系数据库的规范化理论   在这里关系模式视为：R(U,F)，关系名，属性，依赖   第一范式（1NF）：每一个分量必须是不可分的数据项数据依赖：一个关系内部属性和属性之间的一种约束关系。这种约束关系是通过">
+<meta name="keywords" content="考研,人大855,数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第六单元 关系数据理论">
+<meta property="og:url" content="http://yoursite.com/2019/09/09/U6 关系数据理论/index.html">
+<meta property="og:site_name" content="鲸语">
+<meta property="og:description" content="6.1 问题的提出涉及任何数据库应用系统，都会遇到如何构造合适的数据模式即逻辑结构的问题，由于关系模型有严格的数学定义，并可以向其他的数据模型转换。我们就以关系数据模型为背景讨论这个问题，形成了关系数据库的规范化理论   在这里关系模式视为：R(U,F)，关系名，属性，依赖   第一范式（1NF）：每一个分量必须是不可分的数据项数据依赖：一个关系内部属性和属性之间的一种约束关系。这种约束关系是通过">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-09T07:01:24.466Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第六单元 关系数据理论">
+<meta name="twitter:description" content="6.1 问题的提出涉及任何数据库应用系统，都会遇到如何构造合适的数据模式即逻辑结构的问题，由于关系模型有严格的数学定义，并可以向其他的数据模型转换。我们就以关系数据模型为背景讨论这个问题，形成了关系数据库的规范化理论   在这里关系模式视为：R(U,F)，关系名，属性，依赖   第一范式（1NF）：每一个分量必须是不可分的数据项数据依赖：一个关系内部属性和属性之间的一种约束关系。这种约束关系是通过">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/09/U6 关系数据理论/">
+
+
+
+
+
+  <title>第六单元 关系数据理论 | 鲸语</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">鲸语</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/09/U6 关系数据理论/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yu_jingda">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鲸语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第六单元 关系数据理论</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-09T05:03:10+08:00">
+                2019-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/幽邃研路/" itemprop="url" rel="index">
+                    <span itemprop="name">幽邃研路</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="6-1-问题的提出"><a href="#6-1-问题的提出" class="headerlink" title="6.1 问题的提出"></a>6.1 问题的提出</h3><p>涉及任何数据库应用系统，都会遇到如何构造合适的数据模式即逻辑结构的问题，由于关系模型有严格的数学定义，并可以向其他的数据模型转换。我们就以关系数据模型为背景讨论这个问题，形成了关系数据库的规范化理论  </p>
+<p>在这里关系模式视为：R(U,F)，关系名，属性，依赖  </p>
+<p>第一范式（1NF）：每一个分量必须是不可分的数据项<br>数据依赖：一个关系内部属性和属性之间的一种约束关系。这种约束关系是通过属性间值的相等与否体现出来的数据见相关联系<br><a id="more"></a><br>数据依赖中较为重要的是<strong>函数依赖</strong>和<strong>多值依赖</strong>  </p>
+<p>函数依赖：一个属性的确定，可以使得我们确定另外一个属性  </p>
+<p>一个只满足1NF的关系模式一般会出现下列问题：  </p>
+<ol>
+<li>数据冗余</li>
+<li>更新一场</li>
+<li>插入异常</li>
+<li>删除异常</li>
+</ol>
+<p>一个好的模式应当：不会发生插入异常，删除异常，和更新异常，数据冗余应尽可能少  </p>
+<p>不好是因为数据依赖有一些不好的性质。何为不好的性质，下边讲：  </p>
+<h3 id="6-2-规范化"><a href="#6-2-规范化" class="headerlink" title="6.2 规范化"></a>6.2 规范化</h3><p>找出全部依赖–&gt;判断有无不合适的性质–&gt;将不合适的关系转化成更合适的形式   </p>
+<h4 id="6-2-1-函数依赖"><a href="#6-2-1-函数依赖" class="headerlink" title="6.2.1 函数依赖"></a>6.2.1 函数依赖</h4><p>定义：设R(U)是属性集U上的关系模式，X,Y是U的子集，若对于R(U)的任意一个可能的关系r，r中不可能存在两个远足在X上的属性值相等，而在Y上的属性值不等，则称X函数确定Y或者Y函数依赖于X，记作X-&gt;Y  </p>
+<h5 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h5><ol>
+<li>函数依赖和别的数据依赖一样是<strong>语义</strong>范畴的概念，只能根据语义来确定一个函数依赖  </li>
+<li>函数依赖是指R上的一切关系所要满足的约束条件  </li>
+</ol>
+<h5 id="其他术语："><a href="#其他术语：" class="headerlink" title="其他术语："></a>其他术语：</h5><ol>
+<li>非平凡的函数依赖：X-&gt;Y, Y不是X的子集</li>
+<li>平凡的函数依赖：X-&gt;Y, Y是X的子集</li>
+<li>平凡的函数依赖总是成立的，平常的函数依赖默认指非平凡函数依赖</li>
+<li>决定因素：X-&gt;Y，则X称为这个函数依赖的决定属性组，又称</li>
+<li>X-&gt;Y, Y-&gt;X, 则X<-->Y</--></li>
+</ol>
+<h5 id="完全函数依赖"><a href="#完全函数依赖" class="headerlink" title="完全函数依赖"></a>完全函数依赖</h5><p>定义：在R(U)中，如果X-&gt;Y，并且对于X的任何一个真子集X’，都有X’推不出Y，则称Y对X完全函数依赖<br>若X-&gt;Y，但又不是完全函数依赖，则为部分函数依赖</p>
+<h5 id="传递函数依赖"><a href="#传递函数依赖" class="headerlink" title="传递函数依赖"></a>传递函数依赖</h5><p>定义：在R(U)中，如果X-&gt;Y, Y-&gt;Z，且Y不是X的子集，Z不是Y的子集，且X不函数依赖与于Y，则Z对X传递函数依赖。</p>
+<p>若Y-&gt;X，则为直接函数依赖  </p>
+<h4 id="6-2-2-码"><a href="#6-2-2-码" class="headerlink" title="6.2.2 码"></a>6.2.2 码</h4><ol>
+<li>候选码：设K为R(U,F)中的属性或者属性组，如果U完全函数依赖于K，则K为R的候选码</li>
+<li><strong>超码：在上半句的基础上，如果U部分函数依赖于K，则K为超码</strong></li>
+<li><strong>候选码是最小的超码，即K的任何一个真子集都不是候选码</strong></li>
+<li>主码：若候选码多于1个，则选定其中的一个称为主码</li>
+<li><strong>主属性：包含在任意一个候选码中的属性都称为主属性</strong></li>
+<li>不包含在任何候选码中的属性称为非主属性</li>
+<li>全码：整个属性组是码</li>
+<li>关系模式R中属性或属性组X并非R的码，但X是另一个关系模式的码，则称X是R的外部码，也称外码</li>
+</ol>
+<h4 id="6-2-3-范式"><a href="#6-2-3-范式" class="headerlink" title="6.2.3 范式"></a>6.2.3 范式</h4><p><strong>关系数据库中的关系是要满足一定要求的，满足不同程度要求的为不同范式</strong><br>现在将范式理解为符合某一种级别的关系模式的集合<br><strong>一个低一级范式的关系模式通过模式分解可以从转换为若干个高一级范式的关系模式的集合，这种过程就叫规范化</strong>  </p>
+<h4 id="6-2-4-2NF"><a href="#6-2-4-2NF" class="headerlink" title="6.2.4 2NF"></a>6.2.4 2NF</h4><p>定义：若R∈1NF，且每一个非主属性完全函数依赖于任何一个候选码，则R∈2NF.  </p>
+<p>一个关系模式如果不属于2NF就会造成：  </p>
+<ol>
+<li>插入异常</li>
+<li>删除异常</li>
+<li>修改复杂</li>
+</ol>
+<h4 id="6-2-5-3NF"><a href="#6-2-5-3NF" class="headerlink" title="6.2.5 3NF"></a>6.2.5 3NF</h4><p>若满足3NF，则每一个非主属性既不传递依赖于码，又不部分依赖于码  </p>
+<h4 id="6-2-6-BCNF"><a href="#6-2-6-BCNF" class="headerlink" title="6.2.6 BCNF"></a>6.2.6 BCNF</h4><p>定义：关系模式R&lt;U,F&gt;∈1NF，若X-&gt;Y且Y不是X的子集时X必含有码，则R&lt;U,F&gt;∈BCNF<br>也就是说，<strong>关系模式R&lt;U,F&gt;中，若每一个决定因素都包含码，则E&lt;U,F&gt;∈BCNF。</strong>  </p>
+<p>BCNF以下，处理的都是非主属性和主属性之间的问题，而BCNF处理的，是主属性之间的部分函数依赖和传递函数依赖  </p>
+<p>一个关系模式如果属于BCNF，那么在函数依赖范畴，它已实现了彻底的分离  </p>
+<h4 id="6-2-7-多值依赖"><a href="#6-2-7-多值依赖" class="headerlink" title="6.2.7 多值依赖"></a>6.2.7 多值依赖</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/考研/" rel="tag"># 考研</a>
+          
+            <a href="/tags/人大855/" rel="tag"># 人大855</a>
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/25/U5 数据库的完整性/" rel="next" title="第五章 数据库的完整性">
+                <i class="fa fa-chevron-left"></i> 第五章 数据库的完整性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/09/U11 并发控制/" rel="prev" title="第十一章 并发控制">
+                第十一章 并发控制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yu_jingda</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-问题的提出"><span class="nav-number">1.</span> <span class="nav-text">6.1 问题的提出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-规范化"><span class="nav-number">2.</span> <span class="nav-text">6.2 规范化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-1-函数依赖"><span class="nav-number">2.1.</span> <span class="nav-text">6.2.1 函数依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#说明："><span class="nav-number">2.1.1.</span> <span class="nav-text">说明：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其他术语："><span class="nav-number">2.1.2.</span> <span class="nav-text">其他术语：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#完全函数依赖"><span class="nav-number">2.1.3.</span> <span class="nav-text">完全函数依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#传递函数依赖"><span class="nav-number">2.1.4.</span> <span class="nav-text">传递函数依赖</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-2-码"><span class="nav-number">2.2.</span> <span class="nav-text">6.2.2 码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-3-范式"><span class="nav-number">2.3.</span> <span class="nav-text">6.2.3 范式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-4-2NF"><span class="nav-number">2.4.</span> <span class="nav-text">6.2.4 2NF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-5-3NF"><span class="nav-number">2.5.</span> <span class="nav-text">6.2.5 3NF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-6-BCNF"><span class="nav-number">2.6.</span> <span class="nav-text">6.2.6 BCNF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-7-多值依赖"><span class="nav-number">2.7.</span> <span class="nav-text">6.2.7 多值依赖</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yu_jingda</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

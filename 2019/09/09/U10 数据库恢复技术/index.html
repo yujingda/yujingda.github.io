@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="考研,人大855,数据库,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="事务处理技术    数据库恢复技术 并发控制技术10.1 事务的基本概念1. 事务事务：是用户定义的一个数据库操作序列，这些操作要么全做，要么全不做，是一个不可分割的工作单位注意： 事务不是程序，一个程序可以包含多个事务 一个事务可以是一条、多条SQL语句或整个程序 事务的开始或者结束可以由用户显式控制，若用户没有定义，则系统自动划分事务">
+<meta name="keywords" content="考研,人大855,数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第十单元 数据库恢复技术">
+<meta property="og:url" content="http://yoursite.com/2019/09/09/U10 数据库恢复技术/index.html">
+<meta property="og:site_name" content="鲸语">
+<meta property="og:description" content="事务处理技术    数据库恢复技术 并发控制技术10.1 事务的基本概念1. 事务事务：是用户定义的一个数据库操作序列，这些操作要么全做，要么全不做，是一个不可分割的工作单位注意： 事务不是程序，一个程序可以包含多个事务 一个事务可以是一条、多条SQL语句或整个程序 事务的开始或者结束可以由用户显式控制，若用户没有定义，则系统自动划分事务">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-09T07:01:09.820Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第十单元 数据库恢复技术">
+<meta name="twitter:description" content="事务处理技术    数据库恢复技术 并发控制技术10.1 事务的基本概念1. 事务事务：是用户定义的一个数据库操作序列，这些操作要么全做，要么全不做，是一个不可分割的工作单位注意： 事务不是程序，一个程序可以包含多个事务 一个事务可以是一条、多条SQL语句或整个程序 事务的开始或者结束可以由用户显式控制，若用户没有定义，则系统自动划分事务">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/09/U10 数据库恢复技术/">
+
+
+
+
+
+  <title>第十单元 数据库恢复技术 | 鲸语</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">鲸语</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/09/U10 数据库恢复技术/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yu_jingda">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鲸语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第十单元 数据库恢复技术</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-09T15:03:10+08:00">
+                2019-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/幽邃研路/" itemprop="url" rel="index">
+                    <span itemprop="name">幽邃研路</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>事务处理技术  </p>
+<ul>
+<li>数据库恢复技术</li>
+<li>并发控制技术<h3 id="10-1-事务的基本概念"><a href="#10-1-事务的基本概念" class="headerlink" title="10.1 事务的基本概念"></a>10.1 事务的基本概念</h3><h5 id="1-事务"><a href="#1-事务" class="headerlink" title="1. 事务"></a>1. 事务</h5>事务：<strong>是用户定义的一个数据库操作序列，这些操作要么全做，要么全不做，是一个不可分割的工作单位</strong><br>注意：</li>
+<li>事务不是程序，一个程序可以包含多个事务</li>
+<li>一个事务可以是一条、多条SQL语句或整个程序</li>
+<li>事务的开始或者结束可以由用户显式控制，若用户没有定义，则系统自动划分事务<a id="more"></a> 
+语句书写：</li>
+<li>BEGIN TRANSACTION<ul>
+<li>事务从本句开始</li>
+</ul>
+</li>
+<li>COMMIT<ul>
+<li><strong>COMMIT表示提交，即提交事务的所有操作，具体来说就是将食物中所有对数据库的更新写回到磁盘上的物理数据库中去</strong>，事务正常结束</li>
+</ul>
+</li>
+<li>ROLLBACK<ul>
+<li><strong>ROLLBACK表示回滚，系统将事务中对数据库的所有已完成的操作全部撤销，回滚到事务开始时的状态</strong>，这里的操作指的是更新操作  </li>
+</ul>
+</li>
+</ul>
+<h5 id="2-事务的ACID特性"><a href="#2-事务的ACID特性" class="headerlink" title="2. 事务的ACID特性"></a>2. 事务的ACID特性</h5><p><strong>原子性、一致性、隔离性、持续性</strong>，这四个特性简称为<strong>ACID特性</strong>    </p>
+<h6 id="1-原子性"><a href="#1-原子性" class="headerlink" title="1. 原子性"></a>1. 原子性</h6><p>事务是数据库的逻辑工作单位，事务中包含的诸操作要么都做，要么都不做  </p>
+<h6 id="2-一致性"><a href="#2-一致性" class="headerlink" title="2. 一致性"></a>2. 一致性</h6><p>事务执行的结果必须时时数据库从一个一致性状态变到另一个一致性状态。<br>因此当数据库只包含成功提交的结果时候，就说数据库处于一致性状态。  </p>
+<h6 id="3-隔离性"><a href="#3-隔离性" class="headerlink" title="3. 隔离性"></a>3. 隔离性</h6><p>一个事务的执行不能被其他事务干扰，即一个事务的内部操作即使用的数据对其并发事务是隔离的    </p>
+<h6 id="4-持续性"><a href="#4-持续性" class="headerlink" title="4. 持续性"></a>4. 持续性</h6><p>又称为<strong>永久性</strong>，一个事务一旦提交，他对于数据库中数据的改变就是永久性的，接下来的其他操作或者故障不应该对其执行结果有任何影响  </p>
+<p>事务是恢复和并发控制的基本单位<br>事务ACID特性可能遭受破坏的因素有：  </p>
+<ol>
+<li>多个事务并行运行时，不同事物的操作交叉执行</li>
+<li>事务在运行过程中被强行停止</li>
+</ol>
+<p>因此，DBMS要保证多个事务的交叉运行不影响这些事务的原子性–&gt;情况一–&gt;并发控制机制<br>DBMS要保证被强行终止的事物对数据库和其他事务没有任何影响–&gt;情况二–&gt;恢复机制  </p>
+<h3 id="10-2-数据库恢复概述"><a href="#10-2-数据库恢复概述" class="headerlink" title="10.2 数据库恢复概述"></a>10.2 数据库恢复概述</h3><p>数据库的恢复：把数据库从错误状态恢复到某一已知的正确状态（亦称为完整状态或一致状态）<br>数据库采用的恢复技术是否行之有效    </p>
+<ul>
+<li>对于系统的可靠程度起着决定性作用</li>
+<li>影响系统的运行效率</li>
+<li>衡量系统性能优劣的重要指标</li>
+</ul>
+<h3 id="10-3-故障的种类"><a href="#10-3-故障的种类" class="headerlink" title="10.3 故障的种类"></a>10.3 故障的种类</h3><p>数据库系统中可能发生的故障分为以下几类：  </p>
+<h4 id="1-事务内部的故障"><a href="#1-事务内部的故障" class="headerlink" title="1. 事务内部的故障"></a>1. 事务内部的故障</h4><p>事物内部的故障有些可以通过事务程序本身发现，有些是非预期的，无法由事务程序处理<br>（可以通过事务程序本身发现的故障，都已经在程序代码里边写好了如何进行处理，是属于意料之中的情景，没有讨论的意义，<strong>以后我们所讨论的事务故障都是这类非预期的故障</strong>）<br><strong>事物内部更多的故障是非预期的，是不能用应用程序处理的</strong><br>（用应用程序处理就是直接在代码里面写好怎么办）  </p>
+<p>事务故障–&gt;事务没有到达预期的终点–&gt;数据库可能已经处于不正确的状态  </p>
+<p>恢复程序会进行<strong>事务撤销</strong>：撤销该事务做出的任何对于数据库的修改，使得该事务如同从未启动  </p>
+<h4 id="2-系统故障"><a href="#2-系统故障" class="headerlink" title="2. 系统故障"></a>2. 系统故障</h4><p><strong>系统故障是指造成系统停止运转的任何事件，使得系统要重新启动</strong><br>造成结果：</p>
+<ul>
+<li>影响正在进行的所有事务，但不破坏数据库。此时数据库缓冲区的所有内容都会丢失，所有运行事务都非正常终止</li>
+<li>发生系统故障时，一些尚未完成的事务结果可能已经入库，造成数据库处于不正确的状态</li>
+<li>有些已完成事务可能有一部分甚至全部留在缓冲区，尚未能写回到磁盘上的物理数据库中<br>处理方法：</li>
+<li>在系统重新启动时让所有非正常终止的事务回滚，强行撤销所有未完成事务</li>
+<li>回复程序应将所有已完成单位完全提交的事务的已提交的结果重新写入数据库</li>
+</ul>
+<p>总而言之，恢复程序要做的就是：撤销所有未完成的事务，<strong>重做(UNDO)</strong>所有已提交的事务   </p>
+<h4 id="3-介质故障"><a href="#3-介质故障" class="headerlink" title="3. 介质故障"></a>3. 介质故障</h4><p>系统故障常称为<strong>软故障</strong>，介质故障常称为<strong>硬故障</strong><br>硬故障指外存故障<br>造成结果：  </p>
+<ul>
+<li>破坏数据库或者部分数据库，并影响正在存取这部分数据的所有事务<br>特点：</li>
+<li>相对于前两类故障，可能性很小，破坏性最大</li>
+</ul>
+<h4 id="4-计算机病毒"><a href="#4-计算机病毒" class="headerlink" title="4. 计算机病毒"></a>4. 计算机病毒</h4><p>总结：<strong>各类故障对数据库的影响有两种可能性</strong>：  </p>
+<ol>
+<li><strong>数据库可能被破坏</strong></li>
+<li>数据库没有被破坏，但是<strong>数据可能不正确</strong>，这是由于事务的运行被非正常终止造成的  </li>
+</ol>
+<p><strong>恢复的基本原理：冗余</strong>，也就是说，数据库中任何一部分被破坏或者不正确的数据可以根据存储在系统别处的冗余数据被重建  </p>
+<h3 id="10-4-恢复的实现技术"><a href="#10-4-恢复的实现技术" class="headerlink" title="10.4 恢复的实现技术"></a>10.4 恢复的实现技术</h3><p>恢复机制设计的两个关键问题是  </p>
+<ol>
+<li>如何建立冗余数据</li>
+<li>如何利用这些冗余数据实施数据库恢复</li>
+</ol>
+<p><strong>建立冗余数据最常用的方法是数据转储和登记日志文件</strong>  </p>
+<h4 id="10-4-1-数据转储"><a href="#10-4-1-数据转储" class="headerlink" title="10.4.1 数据转储"></a>10.4.1 数据转储</h4><p>转储：DBA定期地将整个数据复制到磁带、磁盘或其他存储介质上保存起来的过程<br>这些备用的数据称为<strong>后备副本</strong>  </p>
+<p>当数据可u遭到破坏之后可以将后背数据重新装入，<strong>但是重装后备副本只能将数据库恢复到转储时的状态</strong>，要想恢复到故障发生时的状态，必须重新运行自转储以后的所有更新事务  </p>
+<p>转储分类</p>
+<ul>
+<li>按照数据库的状态<ul>
+<li>静态转储<ul>
+<li>指系统中无运行事务时的转储操作，</li>
+<li>转储开始时数据库处于一致性的状态，转出期间不允许对数据库的任何存取、修改活动</li>
+<li>优点<ul>
+<li>简单</li>
+<li>得到的一定是个一致性的副本</li>
+</ul>
+</li>
+<li>缺点： <ul>
+<li>转储必须等待正运行的用户事务结束才能进行</li>
+<li>新的事物必须等待转储结束才能执行</li>
+<li>但是会降低数据库的可用性</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>动态转储<ul>
+<li>指转储期间允许对数据库进行存取或修改。即转储和用户事务可以并发执行  </li>
+<li>优点<ul>
+<li>不用等待正在运行的用户事务结束</li>
+<li>也不会影响新事务的运行</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>转储结束后后援副本上的数据并不能保证正确有效</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>按照转储方式<ul>
+<li>海量转储<ul>
+<li>每次转储全部数据库</li>
+</ul>
+</li>
+<li>增量转储<ul>
+<li>每次只转储上一次更新过的数据</li>
+</ul>
+</li>
+<li>对比<ul>
+<li>海量转储得到的后备副本便于进行回复</li>
+<li>当数据库较大，而事务处理又十分频繁的时候，增量转储更实用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>数据转储有两种方式，有都可以在两种方式下进行，因此，数据转储方法可以分为4类：<br><strong>动态海量转储、动态增量转储、静态海量转储、静态增量转储</strong>  </p>
+<p>当进行动态转储的时候，为了保证转储结束后援副本正确有效，必须把转出期间各事务对数据可的修改活动登记下来，建立日志文件。后院副本加上日志文件就能把数据库恢复到某一时刻的正确状态  </p>
+<h4 id="10-4-2-等级日志文件"><a href="#10-4-2-等级日志文件" class="headerlink" title="10.4.2 等级日志文件"></a>10.4.2 等级日志文件</h4><h5 id="1。-日志文件的格式和内容"><a href="#1。-日志文件的格式和内容" class="headerlink" title="1。 日志文件的格式和内容"></a>1。 日志文件的格式和内容</h5><p><strong>日志文件是用来记录事务对数据库的更新操作的文件</strong>  </p>
+<p>日志文件的格式分为两类：</p>
+<ul>
+<li>以记录为单位的日志文件</li>
+<li>以数据块为单位的日志文件</li>
+</ul>
+<h6 id="1-以记录为单位的日志文件"><a href="#1-以记录为单位的日志文件" class="headerlink" title="1. 以记录为单位的日志文件"></a>1. 以记录为单位的日志文件</h6><p><strong>日志当中需要登记的内容包括</strong>  </p>
+<ul>
+<li>各个事务的开始标记(BEGIN TRANSACTION标记)</li>
+<li>各个事务的结束标记(COMMIT或ROLLBACK标记)</li>
+<li>各个事务的所有更新操作</li>
+</ul>
+<p>这里每个事务的开始标记、每个事务的结束标记和每个更新操作均作为日志文件当中的一个记录  </p>
+<p><strong>每个日志记录的内容主要包括</strong>  </p>
+<ul>
+<li>事务标识</li>
+<li>操作的类型</li>
+<li>操作对象</li>
+<li>更新前数据的旧值</li>
+<li>更新后数据的新值</li>
+</ul>
+<h6 id="2-以数据块为单位的日志文件"><a href="#2-以数据块为单位的日志文件" class="headerlink" title="2. 以数据块为单位的日志文件"></a>2. 以数据块为单位的日志文件</h6><p>日志记录的内容</p>
+<ul>
+<li>事务标识</li>
+<li>被更新的数据块</li>
+</ul>
+<p>说明：由于将更新前的整个块和更新后的整个块都放入日志文件之中，就不用再记录操作类型和操作对象   </p>
+<h5 id="2-日志文件的作用"><a href="#2-日志文件的作用" class="headerlink" title="2. 日志文件的作用"></a>2. 日志文件的作用</h5><p>日志文件可以用来进行事务故障恢复和系统故障恢复，并协助后备副本进行介质故障恢复<br>具体作用为：  </p>
+<ol>
+<li>事务故障恢复和系统故障恢复必须要用日志文件</li>
+<li>在动态转储方式中必须建立日志文件，后备文件和日志文件结合起来才能有效地恢复数据库</li>
+<li>在静态转储过程中也可以建立日志文件，当数据库毁坏后可重新装入后援副本把数据库恢复到转出结束时刻的正确状态，然后利用日志文件把已完成的事务进行重做处理，对故障发生时尚未完成的事物进行撤销处理。这样就不必重新运行那些已完成的事务程序就可把数据库恢复到故障前某一时刻的正确状态   <h5 id="3-登记日志文件"><a href="#3-登记日志文件" class="headerlink" title="3. 登记日志文件"></a>3. 登记日志文件</h5><strong>为了保证数据库是可恢复的，登记日志文件时必须遵循两条原则</strong>  </li>
+<li><strong>登记的次序严格按照并发事务执行的时间次序</strong>  </li>
+<li><strong>必须先写日志文件，后写数据库</strong></li>
+</ol>
+<h3 id="10-5-恢复策略"><a href="#10-5-恢复策略" class="headerlink" title="10.5 恢复策略"></a>10.5 恢复策略</h3><p>不同故障其回复策略和方法都不一样    </p>
+<h4 id="10-5-1-事务故障的恢复"><a href="#10-5-1-事务故障的恢复" class="headerlink" title="10.5.1 事务故障的恢复"></a>10.5.1 事务故障的恢复</h4><p>事务故障发生时，恢复子系统会利用日志文件撤销此事务已对系统做出的修改，事务故障的回复是由系统自动完成的，对用户透明<br><strong>系统的恢复步骤为</strong>  </p>
+<ol>
+<li>反向扫描日志文件（即从最后向前扫描日志文件），查找该事务的更新操作</li>
+<li>对该事务的更新操作执行逆操作，即将日志记录中的“更新前的值”写入数据库，如果是插入操作，则相当于做删除操作，如果是删除操作，就重新插入，如果是修改操作，则用修改前得知替代修改后值  </li>
+<li>继续反向扫描日志文件，查找该事务的其他更新操作，并做同样处理  </li>
+<li>如此处理下去，直到读到该事务的开始标记，事务故障回复就完成了</li>
+</ol>
+<h4 id="10-5-2-系统故障的恢复"><a href="#10-5-2-系统故障的恢复" class="headerlink" title="10.5.2 系统故障的恢复"></a>10.5.2 系统故障的恢复</h4><p>系统故障造成数据库不一致的原因有二：</p>
+<ol>
+<li>未完成事务对数据库的更新已经写入数据库</li>
+<li>已完成事务对于数据库的更新还留在缓冲区里没来得及写入数据库</li>
+</ol>
+<p>恢复操作就是撤销故障发生时未完成的事物，重做已完成的事务<br>系统故障的恢复操作是在系统重新启动时自动完成的，不需要用户的干预  </p>
+<p><strong>系统的恢复步骤为</strong>  </p>
+<ol>
+<li>正向扫描日志文件，找出早故障发生之前已经完成的事务（在日志中既有BEGIN TRANSACTION标记又有COMMIT记录），将其事务标识计入重做队列，同时找出故障发生时上未完成的事物（这些事务只有BEGIN TRANSACTION记录），将其事务标记计入撤销队列</li>
+<li>对于撤销队列的每个事务进行撤销处理<ul>
+<li>撤销处理：反向扫描日志文件，对每个撤销事务的更新操作执行逆操作，即将日志记录中更新前的值写入数据库</li>
+</ul>
+</li>
+<li>对重做队列中的各个事务进行重做处理<ul>
+<li>重做处理：正向扫描日志文件，对每个重做十五重新执行日志文件登记的操作，即将日志记录中“更新后的值”写入数据库  </li>
+</ul>
+</li>
+</ol>
+<h4 id="10-5-3-介质故障的恢复"><a href="#10-5-3-介质故障的恢复" class="headerlink" title="10.5.3 介质故障的恢复"></a>10.5.3 介质故障的恢复</h4><p><strong>恢复方法：重装数据库，重做所有已完成的事务</strong>  </p>
+<ol>
+<li>装入最新的数据库副本，使数据库恢复到最近一次转储时的一致性状态  <ul>
+<li>如果是动态转储的副本，就还要装入转出开始时刻的日志文件副本，利用恢复系统故障的方法，才能将数据库恢复到一致性状态  </li>
+</ul>
+</li>
+<li>装入转储结束时刻的日志文件副本，重做已完成的事务，即，首先扫描日志文件，找出故障发生时已提交的事务的标识，将其计入重做队列，然后正向扫描日志文件，对重做队列中的所有事务进行重做处理，即将日志文件中修改后的值写入数据库  </li>
+</ol>
+<p>介质故障的恢复需要数据库管理员接入，但数据库管理员只需要重装最近转储的数据库副本和有关的个文件日志副本，然后执行系统提供的恢复命令即可，具体的恢复操作仍由DBMS进行  </p>
+<h3 id="10-6-具有检查点的恢复技术"><a href="#10-6-具有检查点的恢复技术" class="headerlink" title="10.6 具有检查点的恢复技术"></a>10.6 具有检查点的恢复技术</h3><p>解决的问题：  </p>
+<ul>
+<li>利用日志技术进行数据库恢复时，需要检查所有日志记录，需要耗费大量的时间</li>
+<li>很多需要重做处理事务实际上已经将它们的更新操作结果写到了数据库之中，二回复子系统又重新执行了这些操作，浪费了大量的时间  </li>
+</ul>
+<p>不同之处：添加了重新开始文件，在日志中添加了<strong>检查点记录</strong>，并让恢复子系统在登陆日志期间动态的维护日志  </p>
+<p><strong>检查点记录的内容包括</strong>：  </p>
+<ul>
+<li>建立检查点时刻所有正在执行的事务清单</li>
+<li>这些事务最近一个日志记录的地址</li>
+</ul>
+<p>重新开始文件用来记录各个检查点记录在日志文件中的地址  </p>
+<p><strong>动态维护日志文件的方法是，周期性的执行建立检查点、保存数据库状态的操作</strong>。具体步骤是：  </p>
+<ol>
+<li>将当前日志缓冲区中的日志写入日志文件之中</li>
+<li>在日志文件之中写入一个检查点记录</li>
+<li>把当前数据缓冲区的所有数据记录写入磁盘的数据库中</li>
+<li>吧检查点记录在日志文件中的位置写入重新开始文件之中</li>
+</ol>
+<p>恢复子系统可以定期或者不定期的建立检查点、保存数据库状态，检查点可以按照一个预定的时间间隔建，也可以按照某种规则建立  </p>
+<p>优点：  </p>
+<ul>
+<li><strong>使用检查点方法可以改善回复效率</strong><ul>
+<li>事务T如果在一个检查点之前就进行了提交，T对数据所做的修改一定都已写入数据库。这样，在进行恢复处理时，没有不i要对事物T执行重做操作</li>
+</ul>
+</li>
+</ul>
+<p>引入了检查点之后，事物就被划分成四个状态，系统故障时，这四个状态有不同的恢复策略：<br>T1: 在检查点之前提交<br>T2: 在检查点之前开始执行，在检查点之后故障点之前提交<br>T3: 在检查点之前开始执行，在故障点时还未完成<br>T4: 在检查点之后开始执行，在故障点之前提交<br>T5: 在家差点之后开始执行，在故障点时还未完成  </p>
+<p>T1不管，T2、T4重做，T3、T5撤销</p>
+<p><strong>系统使用检查点方法进行回复的的步骤是：</strong>  </p>
+<ol>
+<li>从重新开始文件中找到最后一个检查点记录在日志文件中的地址，又改地址hi在日志文件中找到最后一个检查点记录</li>
+<li>又该检查点记录得到检查点建立时刻所有正在执行事务清单ACTIVE-LIST<br>在这里建立两个事务队列：  <ul>
+<li>UNDO-LIST：需要执行UNDO操作的事务集合</li>
+<li>REDO-LIST：需要执行REDO操作的事务集合<br>把ACTIVE-LIST暂时放入UNDO-LIST队列，REDO队列暂时为空  </li>
+</ul>
+</li>
+<li><p>从检查点开始正向扫描日志文件</p>
+<ol>
+<li>如果有新开始的事务Ti，就把Ti暂时放入UNDO队列</li>
+<li>如果有提交的事务Tj，把Tj从UNDO队列移动到REDO队列中，直到日志文件结束  </li>
+</ol>
+</li>
+<li><p>对于UNDO队列中的事务执行UNDO操作，对于REDO队列中的事务执行REDO操作  </p>
+</li>
+</ol>
+<h3 id="10-7-数据库镜像"><a href="#10-7-数据库镜像" class="headerlink" title="10.7 数据库镜像"></a>10.7 数据库镜像</h3><p>为了避免磁盘戒指出现故障影响数据库的可用性，许多DBMS提供了数据库镜像功能用于数据库恢复         </p>
+<p>含义：根据DBA的要求，自动把整个数据库火气中的关键数据复制到另一个磁盘上没挡住数据库更新时，DBMS自动八更新后的数据复制过去，由DBMS自动保证镜像数据与著数据库的一致性  </p>
+<p>功能：  </p>
+<ul>
+<li>介质故障<ul>
+<li>可有磁盘镜像继续提供使用，同时DBMS自动根据镜像磁盘数据进行数据库的恢复，不需要关闭系统和重装数据库脚本-</li>
+</ul>
+</li>
+<li>并发操作<ul>
+<li>无故障时，磁盘镜像可用于并发操作，即当一个用户对数据加排他锁修改数据时，其他用户可以读镜像数据库上的内容，而不必等待该用户释放锁  </li>
+</ul>
+</li>
+</ul>
+<p>数据库镜像是通过复制数据实现的，而频繁的复制数据会降低系统运行学校里，在实际应用中，用户往往只对关键数据和日志文件进行镜像，而不死hi对整个系统进行镜像  </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/考研/" rel="tag"># 考研</a>
+          
+            <a href="/tags/人大855/" rel="tag"># 人大855</a>
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/09/U8 数据库编程/" rel="next" title="第八单元 数据库编程">
+                <i class="fa fa-chevron-left"></i> 第八单元 数据库编程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/09/U7 数据库设计/" rel="prev" title="第七单元 数据库设计">
+                第七单元 数据库设计 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yu_jingda</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-事务的基本概念"><span class="nav-number">1.</span> <span class="nav-text">10.1 事务的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-事务"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. 事务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-事务的ACID特性"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. 事务的ACID特性</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-原子性"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">1. 原子性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-一致性"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">2. 一致性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-隔离性"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">3. 隔离性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-持续性"><span class="nav-number">1.0.2.4.</span> <span class="nav-text">4. 持续性</span></a></li></ol></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-数据库恢复概述"><span class="nav-number">2.</span> <span class="nav-text">10.2 数据库恢复概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-3-故障的种类"><span class="nav-number">3.</span> <span class="nav-text">10.3 故障的种类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-事务内部的故障"><span class="nav-number">3.1.</span> <span class="nav-text">1. 事务内部的故障</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-系统故障"><span class="nav-number">3.2.</span> <span class="nav-text">2. 系统故障</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-介质故障"><span class="nav-number">3.3.</span> <span class="nav-text">3. 介质故障</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-计算机病毒"><span class="nav-number">3.4.</span> <span class="nav-text">4. 计算机病毒</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-4-恢复的实现技术"><span class="nav-number">4.</span> <span class="nav-text">10.4 恢复的实现技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#10-4-1-数据转储"><span class="nav-number">4.1.</span> <span class="nav-text">10.4.1 数据转储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-4-2-等级日志文件"><span class="nav-number">4.2.</span> <span class="nav-text">10.4.2 等级日志文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1。-日志文件的格式和内容"><span class="nav-number">4.2.1.</span> <span class="nav-text">1。 日志文件的格式和内容</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-以记录为单位的日志文件"><span class="nav-number">4.2.1.1.</span> <span class="nav-text">1. 以记录为单位的日志文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-以数据块为单位的日志文件"><span class="nav-number">4.2.1.2.</span> <span class="nav-text">2. 以数据块为单位的日志文件</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-日志文件的作用"><span class="nav-number">4.2.2.</span> <span class="nav-text">2. 日志文件的作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-登记日志文件"><span class="nav-number">4.2.3.</span> <span class="nav-text">3. 登记日志文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-5-恢复策略"><span class="nav-number">5.</span> <span class="nav-text">10.5 恢复策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#10-5-1-事务故障的恢复"><span class="nav-number">5.1.</span> <span class="nav-text">10.5.1 事务故障的恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-5-2-系统故障的恢复"><span class="nav-number">5.2.</span> <span class="nav-text">10.5.2 系统故障的恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-5-3-介质故障的恢复"><span class="nav-number">5.3.</span> <span class="nav-text">10.5.3 介质故障的恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-6-具有检查点的恢复技术"><span class="nav-number">6.</span> <span class="nav-text">10.6 具有检查点的恢复技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-7-数据库镜像"><span class="nav-number">7.</span> <span class="nav-text">10.7 数据库镜像</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yu_jingda</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
